@@ -1,0 +1,1702 @@
+/* ==========================================================================
+   Елизавета Зайцева — портфолио
+   styles.css
+
+   Структура файла:
+     01. Токены (цвет, типографика, ритм)   ← ЗДЕСЬ МЕНЯТЬ ПАЛИТРУ
+     02. Сброс и база
+     03. Небо и облака
+     04. Служебное (контейнер, сетка, reveal)
+     05. Шапка и меню
+     06. Hero
+     07. Работы
+     08. Модальное окно кейса
+     09. Обо мне
+     10. Процесс
+     11. Логотипы
+     12. Контакты и подвал
+     13. Адаптив
+     14. prefers-reduced-motion
+   ========================================================================== */
+
+/* 01. ТОКЕНЫ ============================================================== */
+:root{
+  /* --- ПАЛИТРА. Меняйте цвета сайта здесь и только здесь. ---
+     Все оттенки лежат в одном тоновом диапазоне 212–228°, поэтому спорить
+     между собой они не могут. Опорная точка — синий с ваших обложек
+     (плашка #2437AB, чернила рисунков #1C56DE…#2335A8, тон 222–232°).
+     Прежняя палитра была голубой с тоном ~200° при синем декоре на 247° —
+     разрыв в 47° и создавал ощущение несобранности. */
+  --ink:        #151D3C;   /* основной текст — тёмно-синий, тот же тон */
+  --accent:     #1B3AA8;   /* акцент — глубокий ультрамарин, тон вашего фирменного */
+  --accent-ink: #16286F;   /* акцент для мелкого текста и ссылок (AA) */
+  --sky-deep:   #4775E1;   /* глубина неба, декоративные акценты */
+  --sky:        #5FA3F0;   /* небо */
+  --sky-light:  #8CBFF6;   /* светлое небо */
+  --muted:      #6E80A6;   /* линии, рамки, крупный приглушённый текст */
+  --muted-ink:  #232E50;   /* мелкий приглушённый текст (AA) */
+  --paper:      #F2F0ED;   /* «бумага» — взята с фона ваших обложек */
+
+  --line:       rgba(21, 29, 60, .18);
+  --line-soft:  rgba(21, 29, 60, .10);
+
+  /* --- ТИПОГРАФИКА ---
+     Одно семейство на весь сайт. Golos Text — русский гротеск с родной
+     кириллицей и диапазоном 400–900: иерархия строится весом и масштабом,
+     а не набором разных гарнитур. */
+  --font:       "Golos Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Имя стоит рядом с портретом, поэтому кегль подобран от реально доступной
+     ширины: «ЕЛИЗАВЕТА» в капсе занимает 6,18 кегля, справа зарезервирована
+     полоса под фотографию. Проверено на 900–2560px. */
+  --fs-display: clamp(2.9rem, 9.2vw, 9rem);      /* имя в hero */
+  --fs-h2:      clamp(2.1rem, 5.4vw, 4.8rem);
+  --fs-h3:      clamp(1.25rem, 2.1vw, 1.95rem);
+  --fs-lead:    clamp(1.05rem, 1.8vw, 1.7rem);
+  --fs-body:    clamp(.98rem, 1.1vw, 1.08rem);
+  --fs-meta:    clamp(.7rem, .8vw, .78rem);
+
+  /* --- РИТМ --- */
+  --pad:        clamp(18px, 4.4vw, 72px);  /* боковые поля */
+  --gap:        clamp(14px, 1.8vw, 28px);  /* межколоночный интервал */
+  --section:    clamp(52px, 8vh, 112px);   /* вертикальный ритм секций */
+  --maxw:       1560px;
+
+  --ease:       cubic-bezier(.22, .61, .36, 1);
+  --ease-out:   cubic-bezier(.16, 1, .3, 1);
+}
+
+/* 02. СБРОС И БАЗА ======================================================== */
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* компенсация фиксированной шапки при переходе по якорю */
+  scroll-padding-top: clamp(80px, 12vh, 130px);
+}
+
+body{
+  margin: 0;
+  font-family: var(--font);
+  font-size: var(--fs-body);
+  line-height: 1.62;
+  color: var(--ink);
+  background: var(--paper);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Плавный переход воздуха: небо сверху, молоко в зоне работ, небо в финале */
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(180deg,
+      #5FA3F0   0%,   /* hero */
+      #6CACF2  14%,
+      #7FB8F4  32%,
+      #8CBFF6  48%,   /* самая светлая зона — под обложками кейсов */
+      #7FB8F4  66%,
+      #6CACF2  84%,
+      #5FA3F0 100%);  /* финал — снова открытое небо */
+}
+
+img{ max-width: 100%; height: auto; display: block; }
+
+h1, h2, h3, h4{
+  font-family: var(--font);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -.035em;
+  margin: 0;
+  text-wrap: balance;
+}
+/* Крупные высказывания набраны узким вытянутым гротеском,
+   подзаголовки и интерфейс остаются на Onest. */
+h1, h2{
+  font-weight: 900;
+  letter-spacing: -.035em;
+  line-height: .94;
+}
+
+p{ margin: 0; }
+ul, ol{ margin: 0; padding: 0; list-style: none; }
+
+a{ color: inherit; text-decoration: none; }
+
+button{
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+::selection{ background: var(--accent); color: var(--paper); }
+
+/* --- КУРСОР ------------------------------------------------------------
+   Своя графика вместо системной стрелки: маленькое облако того же рисунка,
+   что и в небе. Курсор — это SVG в data-URI, без единой строки JS: скрипт
+   пришлось бы гнать за мышью каждый кадр, и на слабых машинах он бы отставал
+   от настоящего указателя. Здесь отставания нет по определению.
+
+   Ключевая деталь — точка в левом верхнем углу. Облако само по себе большое
+   и «мягкое», по нему непонятно, куда именно вы целитесь; точка стоит ровно
+   в горячей точке курсора (5 5), поэтому точность попадания не теряется.
+   Второй курсор — плотный кружок для всего кликабельного: он подсказывает,
+   что элемент живой, ещё до наведения на него.
+
+   Размер 28px не случаен: Chrome под Windows игнорирует курсоры крупнее 32px
+   и молча возвращает системную стрелку. Хвост `, auto` и `, pointer` — запасной
+   вариант, если браузер почему-то не возьмёт картинку. */
+body{ cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M10 22.5C6.8 22.5 5.2 20.2 6.6 17.9C5.9 14.9 8.4 12.8 11 13.6C12 10.6 16 9.8 18.2 12C20.5 11 23.4 12.6 23.4 15.4C25.9 15.8 26.6 19.1 24.7 21C23.7 22 22.4 22.5 21.2 22.5Z' fill='%23F2F0ED' stroke='%23151D3C' stroke-width='1.7' stroke-linejoin='round'/><circle cx='5' cy='5' r='2.6' fill='%23F2F0ED'/><circle cx='5' cy='5' r='1.7' fill='%23151D3C'/></svg>") 5 5, auto; }
+a, button, summary, label,
+[role="button"], [tabindex="0"],
+.work, .strip__track li{ cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'><circle cx='13' cy='13' r='9.2' fill='%23F2F0ED' opacity='.55'/><circle cx='13' cy='13' r='6.6' fill='%23151D3C'/><circle cx='13' cy='13' r='2.1' fill='%23F2F0ED'/></svg>") 13 13, pointer; }
+
+/* Единый видимый фокус — обязателен для доступности */
+:focus-visible{
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Ссылка «пропустить к содержимому» для клавиатуры и скринридеров */
+.skip-link{
+  position: absolute;
+  left: var(--pad);
+  top: -100px;
+  z-index: 200;
+  padding: 12px 20px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: .85rem;
+  transition: top .2s var(--ease);
+}
+.skip-link:focus{ top: 14px; }
+
+.visually-hidden{
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 03. НЕБО И ОБЛАКА ======================================================= */
+/* Четыре слоя разной глубины. Внешний div двигает JS (параллакс по скроллу),
+   внутренний img дрейфует по горизонтали средствами CSS — так два движения
+   не конфликтуют за одно свойство transform. */
+.sky{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity .9s var(--ease);
+}
+/* В секции работ облака уходят на второй план — фотографии важнее неба */
+.sky.is-dim{ opacity: .62; }
+
+.cloud{
+  position: absolute;
+  will-change: transform;
+}
+.cloud img{
+  width: 100%;
+  opacity: var(--cloud-opacity, 1);
+}
+
+/* Позиции, размер, плотность и наклон каждого облака.
+   Наклон задан свойством rotate, а не transform: transform занят
+   параллаксом из script.js, и они спокойно складываются. */
+.cloud--1 { top:6vh; left:-8%; width:34vw; rotate:-3deg; }
+.cloud--2 { top:30vh; right:-6%; width:30vw; rotate:4deg; }
+.cloud--3 { top:58vh; left:24%; width:20vw; rotate:-6deg; }
+.cloud--4 { top:86vh; right:2%; width:38vw; rotate:2deg; }
+.cloud--5 { top:116vh; left:-6%; width:32vw; rotate:5deg; }
+.cloud--6 { top:146vh; right:-10%; width:22vw; rotate:-4deg; }
+.cloud--7 { top:176vh; left:16%; width:18vw; rotate:7deg; }
+.cloud--8 { top:206vh; right:-4%; width:36vw; rotate:-2deg; }
+.cloud--9 { top:238vh; left:-10%; width:34vw; rotate:3deg; }
+.cloud--10{ top:268vh; right:12%; width:20vw; rotate:-5deg; }
+.cloud--11{ top:298vh; left:4%; width:30vw; rotate:2deg; }
+.cloud--12{ top:328vh; right:-8%; width:18vw; rotate:6deg; }
+.cloud--13{ top:358vh; left:-6%; width:32vw; rotate:-3deg; }
+.cloud--14{ top:390vh; right:6%; width:34vw; rotate:4deg; }
+/* Второй ряд: садится в промежутки между первым, поэтому небо становится
+   плотнее равномерно, а не пятнами. Размеры взяты мельче — крупные облака
+   вторым слоем читались бы как дубли первого. */
+.cloud--15{ top:18vh;  right:28%; width:16vw; rotate:5deg;  }
+.cloud--16{ top:46vh;  left:-4%;  width:24vw; rotate:-5deg; }
+.cloud--19{ top:192vh; right:-6%; width:26vw; rotate:4deg;  }
+.cloud--21{ top:312vh; right:24%; width:19vw; rotate:6deg;  }
+
+/* Плотность и собственное «дыхание» каждого облака. Анимация идёт всегда,
+   в том числе когда страницу никто не листает: без неё небо на стоящей
+   вкладке выглядело мёртвой картинкой. Ключевое здесь — alternate: облако
+   не пробегает путь и не прыгает в начало, а качается туда-обратно, поэтому
+   шва не видно. Периоды заданы взаимно непростыми, а старт сдвинут
+   отрицательной задержкой — так слои не сходятся в общий такт.
+   Отключается через prefers-reduced-motion в самом низу файла. */
+.cloud--1  img{ --cloud-opacity:0.98; animation: float-a 23s -4s  ease-in-out infinite alternate; }
+.cloud--2  img{ --cloud-opacity:0.94; animation: float-b 31s -12s ease-in-out infinite alternate; }
+.cloud--3  img{ --cloud-opacity:0.92; animation: float-a 19s -7s  ease-in-out infinite alternate; }
+.cloud--4  img{ --cloud-opacity:0.96; animation: float-b 37s -21s ease-in-out infinite alternate; }
+.cloud--5  img{ --cloud-opacity:0.93; animation: float-a 27s -3s  ease-in-out infinite alternate; }
+.cloud--6  img{ --cloud-opacity:0.95; animation: float-b 21s -16s ease-in-out infinite alternate; }
+.cloud--7  img{ --cloud-opacity:0.90; animation: float-a 33s -9s  ease-in-out infinite alternate; }
+.cloud--8  img{ --cloud-opacity:0.94; animation: float-b 25s -18s ease-in-out infinite alternate; }
+.cloud--9  img{ --cloud-opacity:0.92; animation: float-a 29s -5s  ease-in-out infinite alternate; }
+.cloud--10 img{ --cloud-opacity:0.93; animation: float-b 35s -24s ease-in-out infinite alternate; }
+.cloud--11 img{ --cloud-opacity:0.96; animation: float-a 22s -11s ease-in-out infinite alternate; }
+.cloud--12 img{ --cloud-opacity:0.91; animation: float-b 26s -2s  ease-in-out infinite alternate; }
+.cloud--13 img{ --cloud-opacity:0.94; animation: float-a 30s -14s ease-in-out infinite alternate; }
+.cloud--14 img{ --cloud-opacity:0.90; animation: float-b 24s -20s ease-in-out infinite alternate; }
+.cloud--15 img{ --cloud-opacity:0.92; animation: float-a 28s -13s ease-in-out infinite alternate; }
+.cloud--16 img{ --cloud-opacity:0.95; animation: float-b 20s -6s  ease-in-out infinite alternate; }
+.cloud--19 img{ --cloud-opacity:0.96; animation: float-a 26s -19s ease-in-out infinite alternate; }
+.cloud--21 img{ --cloud-opacity:0.94; animation: float-a 21s -15s ease-in-out infinite alternate; }
+
+/* Слой поверх содержимого: неподвижен при скролле, накрывает изображения.
+   Только контур и низкая плотность — читаемость не страдает. */
+.sky--front{
+  z-index: 5;
+  /* На первом экране передний слой скрыт: фиксированное облако ложилось
+     бы на портрет и на имя. Появляется, когда hero уходит вверх. */
+  opacity: 0;
+  transition: opacity .7s var(--ease);
+}
+.sky--front.is-on{
+  /* Не 1: слой проходит и над подписями кейсов, а не только над кадрами.
+     На половинной плотности он читается как деликатная накладка
+     и не мешает набору. */
+  opacity: .5;
+}
+.sky--front.is-dim{ opacity: 1; }   /* приглушение работ его не касается */
+.cloud--f1{ top:12vh; left:6%; width:16vw; rotate:-7deg; }
+.cloud--f2{ top:46vh; right:8%; width:14vw; rotate:9deg; }
+.cloud--f3{ top:70vh; left:38%; width:13vw; rotate:-5deg; }
+.cloud--f4{ top:28vh; right:32%; width:17vw; rotate:6deg; }
+/* Передний слой качается вдвое тише: он лежит поверх подписей к кейсам,
+   и заметное движение там отвлекало бы от чтения. */
+.cloud--f1 img{ --cloud-opacity:0.86; animation: float-soft 34s -6s  ease-in-out infinite alternate; }
+.cloud--f2 img{ --cloud-opacity:0.82; animation: float-soft 28s -17s ease-in-out infinite alternate; }
+.cloud--f3 img{ --cloud-opacity:0.80; animation: float-soft 39s -11s ease-in-out infinite alternate; }
+.cloud--f4 img{ --cloud-opacity:0.78; animation: float-soft 31s -25s ease-in-out infinite alternate; }
+
+/* Проценты считаются от ширины самого облака (18–38vw), поэтому в пикселях
+   размах выходит разным — крупные облака идут заметнее мелких, как в небе.
+   Вертикаль задана в px намеренно: одинаковая для всех, иначе большие облака
+   начинают «нырять». */
+@keyframes float-a{
+  from{ transform: translate3d(-3.2%, -7px, 0); }
+  to  { transform: translate3d( 3.2%,  7px, 0); }
+}
+@keyframes float-b{
+  from{ transform: translate3d( 3.6%,  6px, 0); }
+  to  { transform: translate3d(-3.6%, -6px, 0); }
+}
+@keyframes float-soft{
+  from{ transform: translate3d(-1.6%, -4px, 0); }
+  to  { transform: translate3d( 1.6%,  4px, 0); }
+}
+
+/* --- РИСОВАННЫЕ ЗНАЧКИ -------------------------------------------------
+   Стрелки, звёздочки и прочая «карандашная» мелочь по всей странице.
+   Расставлены вручную по пустым местам композиции, а не формулой: любая
+   автоматическая раскладка рано или поздно кладёт значок на текст.
+
+   Общие правила для всех:
+   * pointer-events: none — значок не должен перехватывать клик и не должен
+     менять курсор на кликабельный кружок;
+   * aria-hidden в разметке — для скринридера их нет вовсе, это декор;
+   * overflow: visible — дрожание руки выносит штрихи за пределы viewBox,
+     без этого у знаков срезает края;
+   * цвет берётся из color, поэтому один и тот же символ бывает белым и синим.
+   ---------------------------------------------------------------------- */
+.doodle{
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #fff;
+  opacity: .85;
+}
+/* Синие значки: тон тот же, что у акцентной кнопки. Прозрачность ниже белых —
+   синий на небе тяжелее и при равной плотности начинает спорить с текстом. */
+.doodle--ink{ color: var(--accent); opacity: .5; }
+
+/* Толщина штриха задана в единицах viewBox, поэтому у мелких значков
+   она выглядит толще. Выравниваем вручную. */
+.doodle--sm{ stroke-width: 3.2; }
+
+/* --- ПОМЕТКИ НА ТЕКСТЕ -------------------------------------------------
+   Обводка и подчёркивание ключевых слов — как будто по распечатке прошлись
+   карандашом. Рисунок растягивается под конкретное слово, поэтому у символов
+   m-circle и m-underline широкий viewBox (240 единиц): при преобразовании под
+   реальное слово штрих искажается умеренно. Если сделать viewBox квадратным,
+   овал под длинным словом растянется втрое и вертикальные штрихи станут втрое
+   толще горизонтальных.
+
+   white-space: nowrap обязателен: если помеченное слово разорвётся переносом,
+   рисунок останется на первой строке и повиснет в воздухе. Помечаем только
+   отдельные слова — фразы для этого не годятся. */
+.mark{
+  position: relative;
+  white-space: nowrap;
+}
+.mark > svg{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--accent);
+  opacity: .55;
+  pointer-events: none;
+}
+.mark--circle > svg{ width: 122%; height: 165%; }
+/* Подчёркивание сидит под словом, а не по центру строки: иначе оно проходит
+   по нижним выносным элементам букв «у», «р», «д». */
+.mark--underline > svg{
+  width: 108%;
+  height: 44%;
+  top: auto;
+  bottom: -14%;
+  translate: -50% 0;
+}
+
+/* -- расстановка -- */
+.doodle--hero-1   { width: 42px;  height: 42px;  top: 47%;  left: 57%; }
+.doodle--hero-2   { width: 118px; height: 22px;  top: 65%;  left: 51%; color: var(--accent); opacity: .45; }
+.doodle--works-1  { width: 34px;  height: 62px;  top: 18%;  left: 9%; }
+.doodle--works-2  { width: 46px;  height: 46px;  top: 70%;  left: 2%;  color: var(--accent); opacity: .5; }
+.doodle--works-3  { width: 52px;  height: 52px;  bottom: 8%; right: 6%; }
+.doodle--about-1  { width: 44px;  height: 34px;  top: 12%;  right: 8%; color: var(--accent); opacity: .5; }
+.doodle--about-2  { width: 54px;  height: 54px;  top: 79%;   left: 58%; }
+.doodle--process-1{ width: 40px;  height: 40px;  top: 14%;  right: 3%; }
+.doodle--clients-1{ width: 30px;  height: 30px;  top: -6px; right: 2%; color: var(--accent); opacity: .5; }
+.doodle--strip-1  { width: 74px;  height: 40px;  top: -6px; left: var(--pad); }
+.doodle--contact-1{ width: 44px;  height: 44px;  top: 24%;  right: 12%; }
+.doodle--contact-2{ width: 96px;  height: 32px;  bottom: 16%; right: 4%; color: var(--accent); opacity: .45; }
+
+/* Между планшетом и десктопом сетка кейсов перестраивается, и три значка
+   попадают на текст. Проверено перебором на 1024px — прячем именно их,
+   остальные девять на этой ширине стоят чисто. */
+@media (max-width: 1100px){
+  .doodle--hero-1,
+  .doodle--works-1,
+  .doodle--works-2,
+  .doodle--works-3,
+  .doodle--process-1,
+  .doodle--strip-1{ display: none; }
+}
+
+/* На узких экранах пустых мест почти не остаётся: оставляем три знака,
+   остальные убираем — иначе они ложатся на текст. */
+@media (max-width: 760px){
+  .doodle{ display: none; }
+  .doodle--hero-1,
+  .doodle--strip-1,
+  .doodle--contact-1{ display: block; }
+  /* Стрелка-подсказка к ленте на телефоне нужна больше, чем на планшете:
+     горизонтальный скролл там неочевиден. Но полноразмерная (74x40) не влезает
+     в отступ над лентой и ложится на первый кадр — уменьшаем. */
+  .doodle--strip-1{ width: 52px; height: 26px; top: 0; }
+  /* На телефоне справа сверху теперь стоит фото, и прежнее место звёздочки
+     занято. Проверенное свободное — ниже, между текстом и кнопками. */
+  .doodle--hero-1{ top: 65%; left: 83%; right: auto; }
+  /* В контактах на узком экране текст занимает почти всю высоту:
+     на десктопной позиции звёздочка ложилась на строку с почтой. */
+  .doodle--contact-1{ top: 70%; right: auto; left: 85%; }
+}
+
+/* 04. СЛУЖЕБНОЕ ========================================================== */
+.container{
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+  position: relative;
+}
+
+.section{ padding-block: var(--section); position: relative; }
+
+/* 12-колоночная редакционная сетка */
+.grid12{
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gap);
+}
+
+/* Надзаголовок / метка секции */
+.eyebrow{
+  font-family: var(--font);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before{
+  content: "";
+  width: clamp(24px, 4vw, 56px);
+  height: 1px;
+  background: var(--muted);
+  flex: none;
+}
+
+/* Тонкий разделитель секций */
+.rule{
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 0;
+}
+
+/* Reveal-анимации. Базовое состояние задаётся только при включённом JS,
+   чтобы без JS контент остался видимым. */
+.js [data-reveal]{
+  opacity: 0;
+  transform: translateY(26px);
+}
+.js [data-reveal].is-visible{
+  opacity: 1;
+  transform: none;
+  transition: opacity .85s var(--ease-out), transform .85s var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+/* Появление изображений через маску */
+.js [data-reveal-img] img{
+  clip-path: inset(0 0 100% 0);
+  transform: scale(1.06);
+}
+.js [data-reveal-img].is-visible img{
+  clip-path: inset(0 0 0 0);
+  transform: scale(1);
+  transition: clip-path 1.05s var(--ease-out), transform 1.3s var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+
+/* 05. ШАПКА ============================================================== */
+.site-header{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: clamp(14px, 1.6vw, 22px) var(--pad);
+  /* Стартует прозрачной, при скролле набирает молочный тон.
+     Не «стекло»: плотный молочный цвет + одна волосяная линия. */
+  background: rgba(255, 253, 248, 0);
+  border-bottom: 1px solid transparent;
+  transition: background .45s var(--ease), border-color .45s var(--ease);
+}
+.site-header.is-stuck{
+  background: rgba(255, 253, 248, .93);
+  border-bottom-color: var(--line-soft);
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: auto;
+}
+.brand__logo{
+  /* Высота, а не ширина: знак горизонтальный (пропорция 3,39),
+     и по высоте он должен совпадать с ритмом шапки, а не с её шириной. */
+  height: clamp(24px, 2.3vw, 32px);
+  width: auto;
+  display: block;
+  transition: opacity .3s var(--ease);
+}
+.brand:hover .brand__logo{ opacity: .72; }
+
+.nav{ display: flex; gap: clamp(18px, 2.2vw, 40px); align-items: center; }
+/* Индикатор доступности внутри меню нужен только на мобильных —
+   на десктопе показываем экземпляр, лежащий в шапке. */
+.nav .availability{ display: none; }
+.nav a{
+  font-size: .92rem;
+  position: relative;
+  padding-block: 4px;
+}
+/* подчёркивание растёт от левого края */
+.nav a::after{
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s var(--ease);
+}
+.nav a:hover::after,
+.nav a:focus-visible::after{ transform: scaleX(1); }
+
+.availability{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-meta);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  white-space: nowrap;
+}
+.availability .dot{
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent-ink);
+  flex: none;
+}
+
+/* бургер — только на мобильных */
+.menu-toggle{
+  display: none;
+  width: 44px; height: 44px;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.menu-toggle span{
+  display: block;
+  width: 22px; height: 1.5px;
+  background: var(--ink);
+  position: relative;
+  transition: background .2s var(--ease);
+}
+.menu-toggle span::before,
+.menu-toggle span::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 22px; height: 1.5px;
+  background: var(--ink);
+  transition: transform .35s var(--ease);
+}
+.menu-toggle span::before{ top: -7px; }
+.menu-toggle span::after { top:  7px; }
+.menu-toggle[aria-expanded="true"] span{ background: transparent; }
+.menu-toggle[aria-expanded="true"] span::before{ transform: translateY(7px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span::after { transform: translateY(-7px) rotate(-45deg); }
+
+/* Иконки соцсетей — в шапке и в контактах.
+   Контуры из набора Simple Icons (CC0); знаки принадлежат Telegram и Meta. */
+.social{ display: flex; align-items: center; gap: 10px; }
+.social a{
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: inherit;
+  /* Минимальная площадь нажатия 24x24 (WCAG 2.2, Target Size Minimum).
+     Сама иконка меньше — растёт только область, поля прозрачные. */
+  min-width: 24px;
+  min-height: 24px;
+  justify-content: center;
+}
+.social svg{
+  width: 19px; height: 19px;
+  fill: currentColor;
+  opacity: .78;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.social a:hover svg{ opacity: 1; transform: translateY(-2px); }
+
+.social--header{ gap: 6px; margin-left: 0; }
+.social--header svg{ width: 17px; height: 17px; }
+
+/* 06. HERO =============================================================== */
+.hero{
+  /* Высота по содержимому, без min-height: 100svh.
+     История вопроса: пока экран был растянут на всю высоту, содержимое
+     (около 530px) неизбежно оставляло пустоту — при центрировании снизу
+     (разрыв в 209px до «Избранных работ»), при прижатии книзу сверху
+     (провал под шапкой). Оба провала — следствие лишней высоты, а не
+     выравнивания, поэтому высоту и убрали. Отступ сверху оставлен ровно
+     под фиксированную шапку плюс воздух. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: clamp(96px, 13vh, 148px);
+  padding-bottom: clamp(40px, 6vh, 76px);
+  position: relative;
+}
+
+/* Обёртка заголовка и фото. relative на всех ширинах: фото центрируется
+   по вертикальной оси именно заголовка, а не всей секции. Раньше оно
+   считалось от .hero и вставало по центру экрана — то есть заметно ниже
+   строки с именем. Высоту обёртке задаёт только заголовок: фото внутри
+   абсолютное и в поток не входит. */
+.hero__head{ position: relative; }
+
+.hero__title{
+  /* Выключка влево: обе строки имени идут от одного края,
+     без ступеньки — правее стоит портрет. */
+  text-align: left;
+  font-size: var(--fs-display);
+  /* Именно 900: из Google Fonts приходят 400/500/600/700/900, и заявленное
+     здесь ранее 800 браузер молча подменял девятисотым. */
+  font-weight: 900;
+  letter-spacing: -.008em;
+  /* 0.8 срезал бревис у «Й» строкой выше — нужен воздух над прописными */
+  line-height: .93;
+  text-transform: uppercase;
+  /* Имя набрано в две строки: фамилия смещена вправо по редакционной сетке */
+  display: flex;
+  flex-direction: column;
+}
+/* отступ второй строки больше не нужен — строки держит правый край */
+
+/* На широких экранах имя не должно заезжать под портрет: резервируем
+   справа полосу шириной с фотографию. */
+@media (min-width: 761px){
+  /* Только заголовок: лид и так узкий (max-width: 20ch) и стоит слева,
+     лишний отступ ужимал его в колонку по слову в строке. */
+  .hero__title{ padding-right: calc(clamp(190px, 27vw, 400px) + 4vw); }
+}
+
+/* Первая строка заголовка — род занятий. Тот же гротеск, но мельче и с
+   разрядкой: фраза читается целиком, а имя остаётся главным. */
+.hero__title-role{
+  font-size: clamp(.82rem, 2.1vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: .16em;
+  line-height: 1.1;
+  color: var(--muted-ink);
+  margin-bottom: clamp(10px, 1.6vh, 22px);
+}
+
+.hero__lead{
+  font-size: var(--fs-lead);
+  line-height: 1.28;
+  letter-spacing: -.02em;
+  max-width: 20ch;
+  margin-top: clamp(28px, 5vh, 60px);
+  font-family: var(--font);
+  font-weight: 500;
+}
+
+.hero__bottom{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 34px);
+  margin-top: clamp(32px, 5vh, 56px);
+}
+
+.hero__note{
+  font-size: var(--fs-meta);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+}
+
+/* Кнопки: без скруглений, тонкие, «печатные» */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  font-size: .92rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  border: 1px solid var(--ink);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color .4s var(--ease), border-color .4s var(--ease);
+}
+/* заливка выезжает снизу */
+.btn::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: translateY(101%);
+  transition: transform .5s var(--ease-out);
+}
+.btn:hover, .btn:focus-visible{ color: var(--paper); }
+.btn:hover::before, .btn:focus-visible::before{ transform: translateY(0); }
+
+.btn--accent{
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--paper);
+}
+/* Заливка при наведении — бумага, а не чернила: акцент стал темнее (#1B3AA8),
+   и переход в почти такие же тёмные чернила читался бы еле-еле. Инверсия
+   в светлое видна сразу и зеркалит поведение соседней кнопки-контура. */
+.btn--accent::before{ background: var(--paper); }
+.btn--accent:hover, .btn--accent:focus-visible{ color: var(--ink); }
+
+.btn__arrow{ transition: transform .4s var(--ease); }
+.btn:hover .btn__arrow{ transform: translateX(4px); }
+
+/* Крупный портрет в неровной форме. Обтравка #blob объявлена в разметке
+   в долях самого элемента, поэтому силуэт масштабируется вместе с фото. */
+.hero__portrait{
+  position: absolute;
+  /* Отсчёт идёт от .hero__head, а он уже внутри полей контейнера,
+     поэтому здесь только небольшой вынос наружу, без var(--pad). */
+  right: -1vw;
+  /* Центр фото совпадает с центром имени, а не всего заголовка: строка
+     «Графический дизайнер» вместе со своим нижним отступом сдвигала бы ось
+     вверх примерно на 20px. --role-block повторяет её высоту по тем же
+     формулам, что в .hero__title-role. */
+  --role-block: calc(clamp(.82rem, 2.1vw, 1.9rem) * 1.1 + clamp(10px, 1.6vh, 22px));
+  /* Плюс небольшой опуск: строго по оси имени фото на десктопе смотрелось
+     высоковато — крупный кадр визуально тянет вверх сильнее, чем строка
+     текста. На телефоне этот сдвиг не нужен, там фото маленькое и медиазапрос
+     задаёт top заново. */
+  --drop: clamp(36px, 7vh, 92px);
+  top: calc(50% + var(--role-block) / 2 + var(--drop));
+  translate: 0 -50%;
+  width: clamp(190px, 27vw, 400px);
+  margin: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero__portrait img{
+  width: 100%;
+  height: auto;
+  clip-path: url(#blob);
+  /* лёгкий разворот, чтобы форма не читалась как «просто картинка» */
+  rotate: -2.5deg;
+}
+
+/* 08. РАБОТЫ ============================================================= */
+.works{
+  position: relative;
+  /* Верхний отступ меньше стандартного --section: первый экран и так
+     заканчивается воздухом, второй такой же отступ читался бы как дыра. */
+  padding-top: clamp(20px, 2.6vh, 36px);
+}
+
+/* Крупное фоновое слово в глубине композиции */
+.works__head{
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--gap);
+  margin-bottom: clamp(24px, 3.5vh, 48px);
+}
+.works__title{ font-size: var(--fs-h2); }
+.works__count{
+  font-size: var(--fs-meta);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+}
+
+.works__grid{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gap);
+  /* Было clamp(28px, 4vh, 58px). Под каждым кейсом теперь стоит описание,
+     и прежний зазор растягивал раздел: между работами появлялось больше
+     пустоты, чем занимает сам текст. */
+  row-gap: clamp(20px, 2.4vh, 36px);
+}
+
+/* Один проект = самостоятельная композиция, а не одинаковая карточка */
+.work{
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: var(--gap);
+  position: relative;
+}
+
+.work__media{
+  position: relative;
+  overflow: hidden;
+  background: var(--sky-light);
+  /* Пропорция задаётся в разметке (--ratio) и совпадает с пропорцией
+     обложки: композиции свёрстаны с полями, кроп их ломает. */
+  aspect-ratio: var(--ratio, 4 / 3);
+}
+.work__media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+/* Наведение: изображение слегка приближается */
+@media (hover: hover) and (pointer: fine){
+  .work:hover .work__media img{
+    transform: scale(1.035);
+    transition: transform 1.1s var(--ease-out);
+  }
+}
+
+.work__meta{
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-top: 12px;
+}
+.work__index{
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: var(--fs-meta);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+}
+.work__index::after{
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.work__title{
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: -.03em;
+}
+.work__cat{
+  font-size: .9rem;
+  color: var(--muted-ink);
+}
+/* строка «Смотреть кейс» подъезжает на наведении */
+.work__more{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: .88rem;
+  color: var(--accent-ink);
+  position: static;
+}
+.work__more::after{ content: "→"; transition: transform .4s var(--ease); }
+.work:hover .work__more::after{ transform: translateX(5px); }
+
+/* Кликабельна вся композиция: псевдоэлемент кнопки перекрывает карточку,
+   при этом в фокус попадает настоящая кнопка — работает с клавиатуры. */
+.work__more::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.work:has(.work__more:focus-visible){
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 10px;
+}
+
+/* -- индивидуальные композиции -- */
+
+/* 01 — крупный вводный кейс: широкий кадр и подпись в правой колонке */
+/* Колонка подписи расширена с трёх до четырёх: под описание трёх колонок
+   не хватало, строки ломались после каждого второго слова. */
+.work--lead .work__media{ grid-column: 1 / 9; }
+.work--lead .work__meta {
+  grid-column: 9 / -1;
+  grid-row: 1;
+  justify-content: flex-end;
+  padding-bottom: clamp(10px, 2.5vh, 30px);
+}
+
+/* 02 — текст слева, крупный кадр справа */
+.work--right .work__media{ grid-column: 6 / -1; }
+.work--right .work__meta {
+  grid-column: 1 / 6;
+  grid-row: 1;
+  justify-content: flex-end;
+  padding-bottom: 8px;
+  padding-right: var(--gap);
+}
+
+/* 03 — высокий кадр и компактный текстовый блок рядом */
+.work--tall .work__media{ grid-column: 1 / 7; }
+.work--tall .work__meta {
+  grid-column: 8 / 12;
+  grid-row: 1;
+  justify-content: flex-end;
+  padding-bottom: clamp(12px, 3vh, 38px);
+}
+/* Краткое описание под названием — у каждого кейса, а не только у высокого.
+   Ограничение по ширине обязательно: в узких колонках (кейсы 01 и 05 отдают
+   под подпись всего 4 колонки из 12) строка иначе получается в три слова
+   и текст рассыпается в столбик. */
+.work__note{
+  font-size: .92rem;
+  line-height: 1.5;
+  color: var(--muted-ink);
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  max-width: 44ch;
+}
+
+/* 04 — квадрат со сдвигом вправо */
+.work--offset .work__media{ grid-column: 1 / 8; }
+.work--offset .work__meta {
+  grid-column: 8 / -1;
+  grid-row: 1;
+  justify-content: flex-start;
+  padding-top: clamp(10px, 2.6vh, 34px);
+  padding-left: var(--gap);
+}
+
+/* 05 — широкий кадр, сдвинутый вправо */
+.work--wide .work__media{ grid-column: 5 / -1; }
+.work--wide .work__meta {
+  grid-column: 1 / 5;
+  grid-row: 1;
+  justify-content: flex-end;
+  padding-bottom: clamp(8px, 2vh, 24px);
+  padding-right: var(--gap);
+}
+
+/* 06 — собранный по центру кадр */
+.work--center .work__media{ grid-column: 2 / 12; }
+.work--center .work__meta { grid-column: 2 / 12; }
+/* Здесь подпись идёт во всю ширину кадра, и 44ch превращались бы в одну
+   длинную строку через весь экран — сужаем сильнее. */
+.work--center .work__note{ max-width: 52ch; }
+
+/* 09. МОДАЛЬНОЕ ОКНО КЕЙСА =============================================== */
+.modal[hidden]{ display: none; }
+.modal{
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: end center;
+}
+.modal__overlay{
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 42, 67, .42);
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+}
+.modal.is-open .modal__overlay{ opacity: 1; }
+
+.modal__dialog{
+  position: relative;
+  width: min(1180px, 100%);
+  max-height: 94svh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--paper);
+  padding: clamp(28px, 5vw, 72px);
+  transform: translateY(28px);
+  opacity: 0;
+  transition: transform .55s var(--ease-out), opacity .4s var(--ease);
+}
+.modal.is-open .modal__dialog{ transform: none; opacity: 1; }
+
+.modal__close{
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 46px; height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font-size: 1.1rem;
+  line-height: 1;
+  z-index: 3;
+  transition: background .3s var(--ease), color .3s var(--ease);
+}
+.modal__close:hover{ background: var(--ink); color: var(--paper); }
+
+.modal__index{
+  font-size: var(--fs-meta);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  margin-bottom: 14px;
+}
+.modal__title{
+  font-size: clamp(1.8rem, 4.4vw, 3.6rem);
+  margin-bottom: 22px;
+}
+.modal__facts{
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 4vw, 60px);
+  padding-block: 22px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 30px;
+}
+.modal__fact dt{
+  font-size: var(--fs-meta);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  margin-bottom: 5px;
+}
+.modal__fact dd{ margin: 0; font-size: .98rem; }
+
+.modal__text{
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  max-width: 62ch;
+  margin-bottom: 14px;
+}
+.modal__text + .modal__text{ margin-top: 14px; }
+
+.modal__gallery{
+  display: grid;
+  gap: var(--gap);
+  margin-top: clamp(30px, 5vh, 56px);
+}
+.modal__gallery img{ width: 100%; background: var(--sky-light); }
+
+/* 10. ОБО МНЕ ============================================================ */
+.about__inner{ align-items: start; }
+
+.about__title{
+  grid-column: 1 / 9;
+  font-size: clamp(1.7rem, 4.2vw, 3.7rem);
+  line-height: 1.06;
+  letter-spacing: -.035em;
+  margin-block: clamp(18px, 3vh, 36px) clamp(20px, 4vh, 46px);
+}
+
+.about__portrait{
+  grid-column: 1 / 5;
+  position: relative;
+}
+.about__portrait img{
+  width: 100%;
+  /* мягкая, не строго прямоугольная форма — перекликается с аватаром в шапке */
+  border-radius: 46% 54% 42% 58% / 38% 36% 64% 62%;
+}
+.about__sign{
+  margin-top: 22px;
+  font-family: var(--font);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.about__sign::before{
+  content: "";
+  width: 34px; height: 1px;
+  background: var(--ink);
+  flex: none;
+}
+.about__sign span{
+  font-family: var(--font);
+  font-size: .74rem;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+}
+
+.about__body{ grid-column: 6 / -1; }
+.about__text{
+  font-size: clamp(1.02rem, 1.4vw, 1.28rem);
+  line-height: 1.55;
+  max-width: 58ch;
+}
+
+.about__cols{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap) clamp(24px, 4vw, 60px);
+  margin-top: clamp(24px, 4vh, 48px);
+}
+.about__col h3{
+  font-family: var(--font);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.about__col li{
+  padding-block: 9px;
+  font-size: .96rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+.about__col li:last-child{ border-bottom: 0; }
+
+/* 12. ПРОЦЕСС =========================================================== */
+.process__head{ margin-bottom: clamp(44px, 8vh, 100px); }
+.process__title{ font-size: var(--fs-h2); margin-top: clamp(18px, 3vh, 34px); }
+
+.process__track{ position: relative; }
+
+/* Линия, которая заполняется при скролле */
+.process__line{
+  position: absolute;
+  top: 6px; left: 0; right: 0;
+  height: 1px;
+  background: var(--line);
+}
+.process__line::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent-ink);
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+  /* Без transition: значение приходит из незарегистрированной CSS-переменной,
+     переход по такому свойству не перезапускается и залипает на старом кадре.
+     Пересчёт идёт каждый кадр скролла — движение и так плавное. */
+}
+
+.process__steps{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--gap);
+}
+.step{ padding-top: 30px; position: relative; }
+.step::before{
+  content: "";
+  position: absolute;
+  top: 3px; left: 0;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--muted);
+  transition: background .4s var(--ease), border-color .4s var(--ease);
+}
+.step.is-reached::before{ background: var(--accent-ink); border-color: var(--accent-ink); }
+
+.step__num{
+  font-size: var(--fs-meta);
+  letter-spacing: .16em;
+  color: var(--muted-ink);
+  display: block;
+  margin-bottom: 8px;
+}
+.step__name{
+  font-family: var(--font);
+  font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -.025em;
+  margin-bottom: 10px;
+}
+.step__text{
+  font-size: .92rem;
+  color: var(--muted-ink);
+  max-width: 30ch;
+}
+
+/* 13. ЛОГОТИПЫ ========================================================== */
+.clients__title{
+  font-family: var(--font);
+  font-size: var(--fs-meta);
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  margin-bottom: clamp(20px, 3vh, 38px);
+}
+.clients__list{
+  /* Не сетка, а flex: в сетке широкие знаки упирались в ширину колонки
+     и сжимались по ширине, из-за чего выходили ниже заданной высоты
+     («Мир танков» рисовался 18px вместо 23). Во flex каждый логотип
+     занимает свою натуральную ширину при общей высоте. */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(16px, 2.2vw, 38px);
+}
+.client{
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.client img{
+  width: auto;
+  max-width: 100%;
+  /* Один оптический размер с иконками инструментов. Составные знаки
+     (в две строки, со стопкой) получают коэффициент --logo-k из разметки —
+     иначе при жёстком ограничении по высоте они читаются мельче остальных. */
+  max-height: calc(clamp(17px, 1.9vw, 23px) * var(--logo-k, 1));
+  max-width: none;   /* иначе узкая колонка резала бы широкие знаки по ширине */
+  opacity: .78;
+  transition: opacity .4s var(--ease), transform .4s var(--ease);
+}
+.client:hover img{ opacity: 1; transform: translateY(-2px); }
+
+/* Логотипы — реальные файлы клиентов, приведённые к одному цвету (--ink)
+   и одной оптической высоте. Лежат в assets/images/logos/. */
+
+/* 14. КОНТАКТЫ ========================================================== */
+.contact{
+  padding-block: clamp(64px, 10vh, 140px) clamp(32px, 5vh, 60px);
+  position: relative;
+}
+.contact__title{
+  font-size: clamp(2rem, 6vw, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: -.04em;
+  max-width: 16ch;
+  margin-block: clamp(26px, 4vh, 50px) clamp(40px, 7vh, 90px);
+}
+
+/* Крупная почтовая ссылка — главный акцент финала */
+.contact__mail{
+  display: inline-block;
+  font-family: var(--font);
+  font-size: clamp(1.35rem, 5.2vw, 4.2rem);
+  font-weight: 600;
+  letter-spacing: -.035em;
+  line-height: 1.1;
+  word-break: break-word;
+  position: relative;
+  padding-bottom: .08em;
+}
+.contact__mail::after{
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform .55s var(--ease-out), background-color .4s var(--ease);
+}
+.contact__mail:hover{ color: var(--accent-ink); }
+.contact__mail:hover::after{ transform: scaleX(0); transform-origin: left; }
+
+.contact__links{
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(16px, 2.6vw, 36px);
+  margin-top: clamp(26px, 4vh, 48px);
+}
+.contact__links a{
+  font-size: 1.05rem;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  transition: border-color .35s var(--ease), color .35s var(--ease);
+}
+.contact__links svg{ width: 22px; height: 22px; }
+.contact__links a:hover{ color: var(--accent-ink); border-bottom-color: var(--accent-ink); }
+
+.contact__note{
+  margin-top: clamp(30px, 5vh, 60px);
+  font-size: var(--fs-lead);
+  font-family: var(--font);
+  font-weight: 500;
+  letter-spacing: -.02em;
+  max-width: 24ch;
+  color: var(--muted-ink);
+}
+
+.footer{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px var(--gap);
+  justify-content: space-between;
+  align-items: center;
+  padding-top: clamp(28px, 4.5vh, 56px);
+  margin-top: clamp(34px, 5.5vh, 72px);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-meta);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+}
+.footer a{
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;   /* та же причина: минимальная площадь нажатия */
+}
+.footer a:hover{ color: var(--accent-ink); }
+
+/* 14b. ИНСТРУМЕНТЫ — ИКОНКИ ==============================================
+   Логотипы Adobe и Figma взяты из набора Simple Icons (пути — CC0).
+   Одноцветные, приведены к тону сайта.
+   ========================================================================= */
+.tools{
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(14px, 1.8vw, 26px);
+}
+.tool{ display: flex; align-items: center; }
+.tool svg{
+  width: clamp(20px, 2vw, 26px);
+  height: auto;
+  fill: var(--ink);
+  opacity: .85;
+  transition: opacity .35s var(--ease), transform .35s var(--ease);
+}
+.tool:hover svg{ opacity: 1; transform: translateY(-2px); }
+/* 14c. БЕГУЩИЙ ЧЕЛОВЕЧЕК В ПРОЦЕССЕ ======================================
+   Пиктограмма едет по линии вместе с её заполнением. Две позы сменяют друг
+   друга шагами — классический двухкадровый цикл бега.
+   ========================================================================= */
+.process__runner{
+  position: absolute;
+  top: -26px;
+  left: 0;                 /* дальше позицию ведёт script.js (в процентах) */
+  transform: translateX(-50%);
+  color: var(--ink);
+  pointer-events: none;
+  z-index: 2;
+}
+.process__runner svg{ width: 26px; height: 32px; display: block; }
+
+/* лёгкое подпрыгивание на бегу */
+.process__runner.is-running{ animation: runner-bob .36s steps(2) infinite; }
+@keyframes runner-bob{
+  0%   { transform: translateX(-50%) translateY(0); }
+  50%  { transform: translateX(-50%) translateY(-2px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+/* смена кадров: пока не бежит — стоит в первой позе */
+.runner-frame{ opacity: 0; }
+.runner-frame--a{ opacity: 1; }
+.process__runner.is-running .runner-frame--a{ animation: frame-a .34s steps(1) infinite; }
+.process__runner.is-running .runner-frame--b{ animation: frame-b .34s steps(1) infinite; }
+@keyframes frame-a{ 0%, 49.9%{ opacity: 1 } 50%, 100%{ opacity: 0 } }
+@keyframes frame-b{ 0%, 49.9%{ opacity: 0 } 50%, 100%{ opacity: 1 } }
+
+/* 14d. ГАЛЕРЕЯ ДРУГИХ РАБОТ ==============================================
+   Раздел без заголовка. Горизонтальная лента во всю ширину экрана:
+   листается колесом, свайпом и стрелками с клавиатуры. Высота кадров
+   фиксирована, ширина подстраивается под пропорцию — блок остаётся низким.
+   ========================================================================= */
+.strip{
+  padding-block: clamp(30px, 5vh, 66px) 0;
+  position: relative;
+}
+/* мягкое затухание у правого края — видно, что лента продолжается */
+.strip::after{
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 10px;
+  width: clamp(28px, 5vw, 80px);
+  background: linear-gradient(90deg, rgba(140,191,246,0), rgba(140,191,246,.85));
+  pointer-events: none;
+}
+
+.strip__track{
+  /* Высота кадра одна на всю ленту: и сама высота, и линия верха.
+     Пробовались разные высоты и сдвиг по вертикали — кадры читались как
+     случайно обрезанные, а не как ритм. Разнообразие держится тем, что
+     кадры разной ширины, и порядком: рядом не стоят два кадра одного проекта. */
+  --strip-h: clamp(126px, 16vh, 184px);
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(6px, .7vw, 12px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  /* лента идёт от края до края, но первый кадр встаёт по сетке страницы */
+  padding-inline: var(--pad);
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted) transparent;
+}
+.strip__track:focus-visible{
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 4px;
+}
+.strip__track::-webkit-scrollbar{ height: 6px; }
+.strip__track::-webkit-scrollbar-thumb{
+  background: var(--muted);
+  border-radius: 3px;
+}
+.strip__track::-webkit-scrollbar-track{ background: transparent; }
+
+.strip__track li{
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  background: var(--sky-light);
+  overflow: hidden;
+}
+.strip__track img{
+  height: var(--strip-h);
+  width: auto;
+  display: block;
+  transition: transform .7s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine){
+  .strip__track li:hover img{ transform: scale(1.04); }
+}
+
+/* 15. АДАПТИВ ============================================================
+   Подход mobile-first по содержанию, но раскладки описаны сверху вниз —
+   ниже переопределяются под узкие экраны.                                */
+
+/* ---- ≤ 1024px : планшет ---- */
+@media (max-width: 1024px){
+  /* Кейсы на планшете. Здесь были противоречивые правила: `--offset` и
+     `--right` сначала растягивались во всю ширину, а ниже по файлу тем же
+     селекторам снова назначались колонки 1/4 — три колонки из двенадцати,
+     около 170px. Описание кейса в такой колонке разваливалось на строки
+     по два слова. Поэтому composition-раскладка тут одна и явная:
+     изображение во всю ширину, подпись под ним. */
+  .work--lead   .work__media,
+  .work--right  .work__media,
+  .work--offset .work__media,
+  .work--wide   .work__media,
+  .work--center .work__media{ grid-column: 1 / -1; }
+
+  .work--lead   .work__meta,
+  .work--right  .work__meta,
+  .work--offset .work__meta,
+  .work--wide   .work__meta,
+  .work--center .work__meta{
+    grid-column: 1 / -1;
+    grid-row: 2;
+    padding: 14px 0 0;
+    justify-content: flex-start;
+  }
+  .work__note{ max-width: 62ch; }
+
+  /* Единственное исключение — высокий кейс: у него вертикальная обложка,
+     рядом с ней остаётся честные пять колонок под текст. */
+  .work--tall .work__media  { grid-column: 1 / 8; }
+  .work--tall .work__meta   { grid-column: 8 / -1; grid-row: 1; padding-top: 0; }
+
+  .about__title    { grid-column: 1 / -1; }
+  .about__portrait { grid-column: 1 / 5; }
+  .about__body     { grid-column: 5 / -1; }
+
+  .process__steps{ grid-template-columns: repeat(3, 1fr); row-gap: 34px; }
+  .process__line,
+  .process__runner{ display: none; }   /* линия и бегун — только на десктопе */
+  /* Передний слой облаков на планшете перегружал экран: узкая колонка
+     и накладка поверх содержимого плохо уживаются. */
+  .sky--front{ display: none; }
+}
+
+/* ---- ≤ 760px : телефон ----
+   Граница именно 760, а не 899: при 899 «мобильная» трактовка захватывала
+   и планшет, где имя упиралось в потолок 3rem (48px на экране 768px),
+   а фото — в 108px. И то и другое смотрелось игрушечным. С 761px и выше
+   работает обычная десктопная раскладка: имя от 9.2vw, фото от 27vw
+   и зарезервированная под него полоса справа от заголовка. */
+@media (max-width: 760px){
+  /* Первый экран на телефоне.
+     min-height + flex-end с десктопа давали 270px пустого неба над
+     заголовком: содержимое прижималось к низу экрана, а сверху оставался
+     провал. Здесь наоборот — блок стоит сразу под шапкой, а высота задана
+     по содержимому с небольшим запасом. */
+  .hero{
+    /* На телефоне шапка занимает около 73px, и при 11vh под ней оставалось
+       всего 20px воздуха — заголовок вплотную упирался в логотип. */
+    padding-top: clamp(92px, 13.5vh, 120px);
+    padding-bottom: clamp(30px, 5vh, 52px);
+  }
+  /* Фото возвращается, но маленькое и справа от имени. Ставим его по нижней
+     строке имени: у «Зайцева» справа остаётся 120px, у «Елизавета» — только 67,
+     и по верхней строке фото налезало бы на букву «А». */
+  .hero__head{ position: relative; }
+  /* Имя на телефоне чуть мельче обычного clamp. Иначе «ЕЛИЗАВЕТА» занимает
+     287px из 354 доступных, и фото любого разумного размера налезает на
+     букву «А». При 10.5vw строка заканчивается примерно на 262px, и справа
+     остаётся ровно столько, сколько нужно портрету. */
+  .hero__title{ font-size: clamp(2.3rem, 10.5vw, 3rem); }
+  /* Фото прижато к правому нижнему углу блока с именем: у строки «Зайцева»
+     справа остаётся больше всего свободного места, а у «Елизавета» — всего
+     около 70px, и по верхней строке фото налезало бы на букву «А». */
+  .hero__portrait{
+    display: block;
+    position: absolute;
+    right: 0;
+    left: auto;
+    /* Та же ось, что и на десктопе: центр фото совпадает с центром имени. */
+    top: calc(50% + var(--role-block) / 2);
+    bottom: auto;
+    translate: 0 -50%;
+    width: clamp(80px, 24vw, 108px);
+    z-index: 2;
+  }
+  .hero__portrait img{ rotate: -3deg; }
+  .hero__title{ padding-right: 0; }
+}
+
+/* ---- ≤ 860px : мобильное меню ---- */
+@media (max-width: 860px){
+  .menu-toggle{ display: flex; }
+  .availability{ display: none; }
+
+  /* Простое, не перегруженное анимацией меню */
+  .nav{
+    position: fixed;
+    inset: 0;
+    background: var(--paper);
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: var(--pad);
+    transform: translateY(-100%);
+    /* visibility обязателен: без него уехавшее за экран меню остаётся
+       в цепочке Tab и в дереве доступности — с клавиатуры и со скринридером
+       пользователь попадал на три невидимые ссылки. Задержка равна анимации,
+       чтобы закрытие не обрывалось скачком. */
+    visibility: hidden;
+    transition: transform .45s var(--ease-out), visibility 0s linear .45s;
+    z-index: -1;
+  }
+  .nav.is-open{
+    transform: none;
+    visibility: visible;
+    transition: transform .45s var(--ease-out), visibility 0s;
+  }
+  .nav a{
+    font-family: var(--font);
+    font-size: clamp(1.8rem, 8vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -.03em;
+    padding-block: 12px;
+  }
+  .nav a::after{ display: none; }
+  /* доступность в мобильном меню: показываем статус здесь */
+  .nav .availability{
+    display: flex;
+    font-family: var(--font);
+    margin-top: 26px;
+  }
+  body.is-menu-open{ overflow: hidden; }
+}
+
+/* ---- ≤ 760px : одна колонка ---- */
+@media (max-width: 760px){
+  /* На мобильных оставляем несколько неподвижных облаков на фиксированных
+     высотах: параллакс выключен, поэтому позицию задаём здесь.
+     Передний слой на узких экранах убираем — он мешал бы содержимому. */
+  .cloud{ display: none; }
+  .sky--front{ display: none; }
+  .cloud--2, .cloud--5, .cloud--8, .cloud--11, .cloud--14, .cloud--16{
+    display: block;
+    transform: none !important;
+    width: 58vw;
+  }
+  .cloud--2 { top:  10vh; right: -12%; left: auto; }
+  .cloud--5 { top:  76vh; left:  -10%; right: auto; }
+  .cloud--8 { top: 150vh; right:  -8%; left: auto; }
+  .cloud--11{ top: 224vh; left:   -6%; right: auto; }
+  .cloud--14{ top: 298vh; right: -10%; left: auto; }
+  .cloud--16{ top: 372vh; left:   -8%; right: auto; width: 50vw; }
+
+  .hero__title span:last-child{ padding-left: 0; }
+  .hero__plate{
+    position: static;
+    width: min(200px, 60%);
+    margin-top: 34px;
+    transform: rotate(-2.5deg);
+  }
+  .hero__lead{ max-width: 100%; }
+
+  /* Все проекты становятся одноколоночными, порядок: изображение → подпись */
+  .work{ grid-column: 1 / -1; margin-top: 0; }
+  /* Одна колонка. Пропорция остаётся из --ratio — обложки не кропаем. */
+  .work__media,
+  .work--lead   .work__media,
+  .work--wide   .work__media,
+  .work--right  .work__media,
+  .work--tall   .work__media,
+  .work--offset .work__media,
+  .work--center .work__media{
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-height: 0;
+    margin-inline: 0;
+  }
+  .work__meta,
+  .work--lead   .work__meta,
+  .work--wide   .work__meta,
+  .work--right  .work__meta,
+  .work--tall   .work__meta,
+  .work--offset .work__meta,
+  .work--center .work__meta{
+    grid-column: 1 / -1;
+    grid-row: 2;
+    padding: 18px 0 0;
+  }
+
+  .about__title,
+  .about__portrait,
+  .about__body{ grid-column: 1 / -1; }
+  .about__portrait{ max-width: 320px; margin-bottom: 34px; }
+  .about__cols{ grid-template-columns: 1fr; }
+
+  .process__steps{ grid-template-columns: 1fr; }
+  .step{ padding-left: 22px; padding-top: 0; padding-bottom: 8px; }
+  .step::before{ top: 8px; }
+  .step__text{ max-width: 100%; }
+
+
+  .service__text{ padding-left: 0; }
+  .modal__dialog{ padding-inline: 20px; }
+}
+
+/* ---- ≤ 420px : мелкие экраны ---- */
+@media (max-width: 420px){
+  .btn{ padding: 13px 20px; width: 100%; justify-content: center; }
+  .hero__bottom{ gap: 12px; }
+  .hero__bottom .btn{ flex: 1 1 100%; }
+}
+
+/* 16. PREFERS-REDUCED-MOTION ============================================
+   Облака неподвижны, reveal-анимации выключены, движение сведено к цвету. */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+
+  *, *::before, *::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .cloud img{ animation: none !important; }
+
+  /* Бегун остаётся стоять в первой позе */
+  .process__runner,
+  .process__runner.is-running{ animation: none !important; }
+  .runner-frame--a{ opacity: 1 !important; }
+  .runner-frame--b{ opacity: 0 !important; }
+
+  .js [data-reveal],
+  .js [data-reveal].is-visible{ opacity: 1; transform: none; }
+  .js [data-reveal-img] img,
+  .js [data-reveal-img].is-visible img{ clip-path: none; transform: none; }
+
+  .work:hover .work__media img{ transform: none; }
+}
