@@ -1562,17 +1562,25 @@ a, button, summary, label,
   .work--right  .work__media,
   .work--offset .work__media,
   .work--wide   .work__media,
-  .work--center .work__media{ grid-column: 1 / -1; grid-row: 2; }
+  .work--center .work__media{ grid-column: 1 / -1; grid-row: 4; }
 
-  .work--lead   .work__meta,
-  .work--right  .work__meta,
-  .work--offset .work__meta,
-  .work--wide   .work__meta,
-  .work--center .work__meta{
+  /* Кнопка «Смотреть кейс» уходит ПОД обложку, хотя в разметке она лежит
+     внутри блока с подписью. Чтобы это стало возможным, сам блок перестаёт
+     быть коробкой (display: contents) и его содержимое становится
+     элементами той же сетки — тогда каждой строке можно назначить свой ряд.
+     Расстояния, которые раньше давал gap этого блока, восстановлены
+     отступами у самих строк. */
+  .work__meta{ display: contents; }
+
+  .work__index{ grid-column: 1 / -1; grid-row: 1; }
+  .work__title{ grid-column: 1 / -1; grid-row: 2; margin-top: 7px; }
+  .work__cat  { grid-column: 1 / -1; grid-row: 3; margin-top: 7px;
+                                       padding-bottom: 14px; }
+  .work__more {
     grid-column: 1 / -1;
-    grid-row: 1;
-    padding: 0 0 14px;
-    justify-content: flex-start;
+    grid-row: 5;
+    justify-self: start;
+    margin-top: 16px;
   }
 
   /* Между кейсами — воздух. В один столбец кейсы идут сплошной лентой,
@@ -1581,10 +1589,11 @@ a, button, summary, label,
      только расстояние. */
   .works__grid{ row-gap: clamp(38px, 7vw, 56px); }
 
-  /* Единственное исключение — высокий кейс: у него вертикальная обложка,
-     рядом с ней остаётся честные пять колонок под текст. */
-  .work--tall .work__media  { grid-column: 1 / 8; }
-  .work--tall .work__meta   { grid-column: 8 / -1; grid-row: 1; padding-top: 0; }
+  /* Высокий кейс раньше оставался в двух колонках: обложка слева, текст
+     справа. Теперь он в столбец, как остальные пять. Иначе в разделе
+     соседствуют два разных порядка, и у одного кейса кнопка оказывается
+     сбоку от обложки, а не под ней. */
+  .work--tall .work__media  { grid-column: 1 / -1; grid-row: 4; }
 
   .about__title    { grid-column: 1 / -1; }
   .about__portrait { grid-column: 1 / 5; }
@@ -1737,21 +1746,20 @@ a, button, summary, label,
   .work--offset .work__media,
   .work--center .work__media{
     grid-column: 1 / -1;
-    grid-row: 2;
+    grid-row: 4;
     min-height: 0;
     margin-inline: 0;
   }
+  /* На телефоне в столбец встаёт и высокий кейс, поэтому здесь схема
+     распространяется и на него: блок с подписью перестаёт быть коробкой,
+     а строки занимают свои ряды. */
   .work__meta,
-  .work--lead   .work__meta,
-  .work--wide   .work__meta,
-  .work--right  .work__meta,
-  .work--tall   .work__meta,
-  .work--offset .work__meta,
-  .work--center .work__meta{
-    grid-column: 1 / -1;
-    grid-row: 1;
-    padding: 0 0 14px;
-  }
+  .work--tall .work__meta{ display: contents; }
+
+  .work__index{ grid-column: 1 / -1; grid-row: 1; }
+  .work__title{ grid-column: 1 / -1; grid-row: 2; margin-top: 7px; }
+  .work__cat  { grid-column: 1 / -1; grid-row: 3; margin-top: 7px; padding-bottom: 14px; }
+  .work__more { grid-column: 1 / -1; grid-row: 5; justify-self: start; margin-top: 16px; }
 
   .about__title,
   .about__portrait,
