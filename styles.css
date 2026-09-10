@@ -1003,20 +1003,6 @@ a, button, summary, label,
   justify-content: flex-end;
   padding-bottom: clamp(12px, 3vh, 38px);
 }
-/* Краткое описание под названием — у каждого кейса, а не только у высокого.
-   Ограничение по ширине обязательно: в узких колонках (кейсы 01 и 05 отдают
-   под подпись всего 4 колонки из 12) строка иначе получается в три слова
-   и текст рассыпается в столбик. */
-.work__note{
-  font-size: .92rem;
-  line-height: 1.5;
-  color: var(--muted-ink);
-  margin-top: 8px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-  max-width: 44ch;
-}
-
 /* 04 — квадрат со сдвигом вправо */
 .work--offset .work__media{ grid-column: 1 / 8; }
 .work--offset .work__meta {
@@ -1042,7 +1028,6 @@ a, button, summary, label,
 .work--center .work__meta { grid-column: 2 / 12; }
 /* Здесь подпись идёт во всю ширину кадра, и 44ch превращались бы в одну
    длинную строку через весь экран — сужаем сильнее. */
-.work--center .work__note{ max-width: 52ch; }
 
 /* 09. МОДАЛЬНОЕ ОКНО КЕЙСА =============================================== */
 .modal[hidden]{ display: none; }
@@ -1568,12 +1553,16 @@ a, button, summary, label,
      селекторам снова назначались колонки 1/4 — три колонки из двенадцати,
      около 170px. Описание кейса в такой колонке разваливалось на строки
      по два слова. Поэтому composition-раскладка тут одна и явная:
-     изображение во всю ширину, подпись под ним. */
+     изображение во всю ширину, подпись НАД ним.
+
+     Подпись именно над обложкой, а не под: когда кейсы идут в один
+     столбец, подпись под картинкой зрительно липнет к следующей обложке,
+     и непонятно, к какому кейсу она относится. Сверху такой путаницы нет. */
   .work--lead   .work__media,
   .work--right  .work__media,
   .work--offset .work__media,
   .work--wide   .work__media,
-  .work--center .work__media{ grid-column: 1 / -1; }
+  .work--center .work__media{ grid-column: 1 / -1; grid-row: 2; }
 
   .work--lead   .work__meta,
   .work--right  .work__meta,
@@ -1581,11 +1570,29 @@ a, button, summary, label,
   .work--wide   .work__meta,
   .work--center .work__meta{
     grid-column: 1 / -1;
-    grid-row: 2;
-    padding: 14px 0 0;
+    grid-row: 1;
+    padding: 0 0 14px;
     justify-content: flex-start;
   }
-  .work__note{ max-width: 62ch; }
+
+  /* Между кейсами — воздух и нарисованная от руки черта. В один столбец
+     кейсы идут сплошной лентой, и без разделителя обложка предыдущего
+     кейса читается как часть следующего. Линия нарисована той же рукой,
+     что стрелки и звёздочки: дрожание запечено в координаты, к краям
+     штрих сходит на нет, будто карандаш оторвали. */
+  .works__grid{ row-gap: clamp(38px, 7vw, 56px); }
+  .work + .work{ position: relative; }
+  .work + .work::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(clamp(38px, 7vw, 56px) / -2 - 7px);
+    height: 14px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 14' preserveAspectRatio='none'%3E%3Cpath d='M 6.0 7.0 Q 8.5 6.9 11.1 6.9 Q 16.1 6.9 18.7 7.0 Q 23.7 6.6 26.3 6.4 Q 31.3 6.5 33.9 6.2 Q 38.9 6.3 41.5 6.3 Q 46.5 6.4 49.1 6.5 Q 54.1 7.2 56.7 7.4 Q 61.7 7.7 64.3 7.7 Q 69.3 7.4 71.9 7.1 Q 76.9 6.5 79.5 6.3 Q 84.5 5.8 87.1 6.0 Q 92.1 6.5 94.7 6.8 Q 99.7 7.4 102.3 7.7 Q 107.3 8.1 109.9 8.2 Q 114.9 8.5 117.5 8.3 Q 122.5 8.0 125.1 7.7 Q 130.1 7.9 132.7 8.0 Q 137.7 7.9 140.3 8.0 Q 145.3 8.1 147.9 7.7 Q 152.9 7.1 155.5 6.7 Q 160.5 5.6 163.1 5.2 Q 168.1 4.7 170.7 4.8 Q 175.7 5.3 178.3 5.6 Q 183.3 6.5 185.9 6.9 Q 190.9 7.2 193.5 7.3 Q 198.5 7.3 201.1 7.4 Q 206.1 7.0 208.7 6.9 Q 213.7 6.8 216.3 6.9 Q 221.3 6.8 223.9 6.9 Q 228.9 7.0 231.5 7.0' fill='none' stroke='%23151D3C' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    opacity: .3;
+    pointer-events: none;
+  }
 
   /* Единственное исключение — высокий кейс: у него вертикальная обложка,
      рядом с ней остаётся честные пять колонок под текст. */
@@ -1729,7 +1736,12 @@ a, button, summary, label,
 
   /* Все проекты становятся одноколоночными, порядок: изображение → подпись */
   .work{ grid-column: 1 / -1; margin-top: 0; }
-  /* Одна колонка. Пропорция остаётся из --ratio — обложки не кропаем. */
+  /* Одна колонка, подпись НАД обложкой. Пропорция остаётся из --ratio,
+     обложки не кропаем.
+
+     Порядок важен: когда кейсы идут в один столбец, подпись под картинкой
+     зрительно липнет к следующей обложке, и непонятно, к какому кейсу она
+     относится. Сверху такой путаницы нет. */
   .work__media,
   .work--lead   .work__media,
   .work--wide   .work__media,
@@ -1738,7 +1750,7 @@ a, button, summary, label,
   .work--offset .work__media,
   .work--center .work__media{
     grid-column: 1 / -1;
-    grid-row: 1;
+    grid-row: 2;
     min-height: 0;
     margin-inline: 0;
   }
@@ -1750,8 +1762,8 @@ a, button, summary, label,
   .work--offset .work__meta,
   .work--center .work__meta{
     grid-column: 1 / -1;
-    grid-row: 2;
-    padding: 18px 0 0;
+    grid-row: 1;
+    padding: 0 0 14px;
   }
 
   .about__title,
