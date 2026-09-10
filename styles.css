@@ -665,9 +665,9 @@ a, button, summary, label,
   flex-direction: column;
   justify-content: flex-start;
   /* Нижняя граница считается от высоты шапки (около 77px), а не с нуля:
-     при 14.4vh на экране высотой 700px отступ падал до 104px, то есть
-     до имени оставалось 27px и оно почти упиралось в шапку. */
-  padding-top: clamp(124px, 14.4vh, 168px);
+     иначе на невысоком ноутбуке надпись почти упирается в логотип.
+     Сейчас под шапкой около 90px воздуха на экране 1440x900. */
+  padding-top: clamp(152px, 18.5vh, 196px);
   padding-bottom: clamp(52px, 7.6vh, 96px);
   position: relative;
 }
@@ -1614,7 +1614,7 @@ a, button, summary, label,
   .hero{
     /* На телефоне шапка занимает около 73px, и при 11vh под ней оставалось
        всего 20px воздуха — заголовок вплотную упирался в логотип. */
-    padding-top: clamp(100px, 14vh, 132px);
+    padding-top: clamp(116px, 16.5vh, 152px);
     padding-bottom: clamp(38px, 6vh, 62px);
   }
   /* Фото возвращается, но маленькое и справа от имени. Ставим его по нижней
