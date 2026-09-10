@@ -12,3 +12,9 @@ assets/raw
 .DS_Store
 README.md
 wrangler.jsonc
+
+# Скиллы Claude Code — рабочий инструмент, а не часть сайта.
+# Исключать обязательно: assets.directory в wrangler.jsonc указывает на "./",
+# то есть на корень репозитория, и без этой строки содержимое .claude
+# оказалось бы опубликованным на li3a.ru.
+.claude
