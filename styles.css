@@ -664,8 +664,11 @@ a, button, summary, label,
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: clamp(96px, 13vh, 148px);
-  padding-bottom: clamp(40px, 6vh, 76px);
+  /* Нижняя граница считается от высоты шапки (около 77px), а не с нуля:
+     при 14.4vh на экране высотой 700px отступ падал до 104px, то есть
+     до имени оставалось 27px и оно почти упиралось в шапку. */
+  padding-top: clamp(124px, 14.4vh, 168px);
+  padding-bottom: clamp(52px, 7.6vh, 96px);
   position: relative;
 }
 
@@ -724,7 +727,7 @@ a, button, summary, label,
      ширину и запас. Срабатывает только на узком десктопе (около 768px, где
      до фотографии оставалось 14px), на широком в дело идёт 46ch. */
   max-width: min(46ch, calc(100% - clamp(190px, 27vw, 400px) - 5vw));
-  margin-top: clamp(28px, 5vh, 60px);
+  margin-top: clamp(32px, 5.8vh, 68px);
   font-family: var(--font);
   font-weight: 500;
 }
@@ -734,7 +737,7 @@ a, button, summary, label,
   flex-wrap: wrap;
   align-items: center;
   gap: clamp(16px, 2.4vw, 34px);
-  margin-top: clamp(32px, 5vh, 56px);
+  margin-top: clamp(36px, 5.8vh, 64px);
 }
 
 .hero__note{
@@ -1611,8 +1614,8 @@ a, button, summary, label,
   .hero{
     /* На телефоне шапка занимает около 73px, и при 11vh под ней оставалось
        всего 20px воздуха — заголовок вплотную упирался в логотип. */
-    padding-top: clamp(92px, 13.5vh, 120px);
-    padding-bottom: clamp(30px, 5vh, 52px);
+    padding-top: clamp(100px, 14vh, 132px);
+    padding-bottom: clamp(38px, 6vh, 62px);
   }
   /* Фото возвращается, но маленькое и справа от имени. Ставим его по нижней
      строке имени: у «Зайцева» справа остаётся 120px, у «Елизавета» — только 67,
