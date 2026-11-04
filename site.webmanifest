@@ -1,7 +1,7 @@
 {
-  "name": "Елизавета Зайцева — графический дизайнер",
+  "name": "Лиза Зайцева — графический дизайнер",
   "short_name": "Li3a",
-  "description": "Айдентика, упаковка и визуальные системы для брендов, которым важно быть узнаваемыми.",
+  "description": "Айдентика, брендбуки, упаковка и digital для брендов, которым важно быть узнаваемыми.",
   "lang": "ru",
   "start_url": "./",
   "scope": "./",
@@ -10,17 +10,17 @@
   "theme_color": "#5FA3F0",
   "icons": [
     {
-      "src": "assets/images/icon-192.png",
+      "src": "assets/images/icon-192.png?v=2",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "assets/images/icon-512.png",
+      "src": "assets/images/icon-512.png?v=2",
       "type": "image/png",
       "sizes": "512x512"
     },
     {
-      "src": "assets/images/icon-maskable-512.png",
+      "src": "assets/images/icon-maskable-512.png?v=2",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"

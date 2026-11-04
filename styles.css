@@ -22,15 +22,15 @@
 /* 01. ТОКЕНЫ ============================================================== */
 :root{
   /* --- ПАЛИТРА. Меняйте цвета сайта здесь и только здесь. ---
-     Все оттенки лежат в одном тоновом диапазоне 212–228°, поэтому спорить
-     между собой они не могут. Опорная точка — синий с ваших обложек
-     (плашка #2437AB, чернила рисунков #1C56DE…#2335A8, тон 222–232°).
-     Прежняя палитра была голубой с тоном ~200° при синем декоре на 247° —
-     разрыв в 47° и создавал ощущение несобранности. */
+     Два цвета и бумага: небо и чернила. Всё, что «нарисовано от руки»
+     (кнопки, рамки обложек, овалы, значки), и главная кнопка — чернилами.
+     Раньше акцентом был ультрамарин #1B3AA8, взятый с синих дудлов старых
+     обложек. Обложки сменились, а цвет остался без опоры: по светлоте он
+     слишком близок к небу (контраст 3,6:1) при высокой насыщенности,
+     поэтому кнопка «вибрировала» на фоне. Чернила дают 6,3:1 и уже стоят
+     во всех рисованных линиях — палитра стала одной системой. */
   --ink:        #151D3C;   /* основной текст — тёмно-синий, тот же тон */
-  --accent:     #1B3AA8;   /* акцент — глубокий ультрамарин, тон вашего фирменного */
   --accent-ink: #16286F;   /* акцент для мелкого текста и ссылок (AA) */
-  --sky-deep:   #4775E1;   /* глубина неба, декоративные акценты */
   --sky:        #5FA3F0;   /* небо */
   --sky-light:  #8CBFF6;   /* светлое небо */
   --muted:      #6E80A6;   /* линии, рамки, крупный приглушённый текст */
@@ -115,12 +115,13 @@ h1, h2, h3, h4{
   margin: 0;
   text-wrap: balance;
 }
-/* Крупные высказывания набраны узким вытянутым гротеском,
-   подзаголовки и интерфейс остаются на Onest. */
+/* Заголовки разделов — 800, а не 900: на крупном кегле девятисотый
+   со сжатым трекингом слеплял буквы в пятно, особенно «ж», «ш», «ы».
+   Девятисотым остаётся только имя на первом экране. */
 h1, h2{
-  font-weight: 900;
-  letter-spacing: -.035em;
-  line-height: .94;
+  font-weight: 800;
+  letter-spacing: -.022em;
+  line-height: .98;
 }
 
 p{ margin: 0; }
@@ -136,7 +137,7 @@ button{
   cursor: pointer;
 }
 
-::selection{ background: var(--accent); color: var(--paper); }
+::selection{ background: var(--ink); color: var(--paper); }
 
 /* --- КУРСОР ------------------------------------------------------------
    Своя графика вместо системной стрелки: маленькое облако того же рисунка,
@@ -218,21 +219,20 @@ a, button, summary, label,
    параллаксом из script.js, и они спокойно складываются. */
 .cloud--1 { top:6vh; left:-8%; width:34vw; rotate:-3deg; }
 .cloud--2 { top:30vh; right:-6%; width:30vw; rotate:4deg; }
-.cloud--3 { top:58vh; left:24%; width:20vw; rotate:-6deg; }
 .cloud--4 { top:86vh; right:2%; width:38vw; rotate:2deg; }
 .cloud--5 { top:116vh; left:-6%; width:32vw; rotate:5deg; }
-.cloud--6 { top:146vh; right:-10%; width:22vw; rotate:-4deg; }
-.cloud--7 { top:176vh; left:16%; width:18vw; rotate:7deg; }
 .cloud--8 { top:206vh; right:-4%; width:36vw; rotate:-2deg; }
 .cloud--9 { top:238vh; left:-10%; width:34vw; rotate:3deg; }
-.cloud--10{ top:268vh; right:12%; width:20vw; rotate:-5deg; }
 .cloud--11{ top:298vh; left:4%; width:30vw; rotate:2deg; }
 .cloud--12{ top:328vh; right:-8%; width:18vw; rotate:6deg; }
-.cloud--13{ top:358vh; left:-6%; width:32vw; rotate:-3deg; }
 .cloud--14{ top:390vh; right:6%; width:34vw; rotate:4deg; }
-/* Второй ряд: садится в промежутки между первым, поэтому небо становится
-   плотнее равномерно, а не пятнами. Размеры взяты мельче — крупные облака
-   вторым слоем читались бы как дубли первого. */
+/* Дальний план: садится в промежутки между ближними облаками. Те же формы,
+   но вдвое бледнее — небо получает глубину, а текст поверх остаётся чистым. */
+.cloud--3 { top:58vh; left:24%; width:20vw; rotate:-6deg; }
+.cloud--6 { top:146vh; right:-10%; width:22vw; rotate:-4deg; }
+.cloud--7 { top:176vh; left:16%; width:18vw; rotate:7deg; }
+.cloud--10{ top:268vh; right:12%; width:20vw; rotate:-5deg; }
+.cloud--13{ top:358vh; left:-6%; width:32vw; rotate:-3deg; }
 .cloud--15{ top:18vh;  right:28%; width:16vw; rotate:5deg;  }
 .cloud--16{ top:46vh;  left:-4%;  width:24vw; rotate:-5deg; }
 .cloud--19{ top:192vh; right:-6%; width:26vw; rotate:4deg;  }
@@ -247,49 +247,23 @@ a, button, summary, label,
    Отключается через prefers-reduced-motion в самом низу файла. */
 .cloud--1  img{ --cloud-opacity:0.98; animation: float-a 23s -4s  ease-in-out infinite alternate; }
 .cloud--2  img{ --cloud-opacity:0.94; animation: float-b 31s -12s ease-in-out infinite alternate; }
-.cloud--3  img{ --cloud-opacity:0.92; animation: float-a 19s -7s  ease-in-out infinite alternate; }
 .cloud--4  img{ --cloud-opacity:0.96; animation: float-b 37s -21s ease-in-out infinite alternate; }
 .cloud--5  img{ --cloud-opacity:0.93; animation: float-a 27s -3s  ease-in-out infinite alternate; }
-.cloud--6  img{ --cloud-opacity:0.95; animation: float-b 21s -16s ease-in-out infinite alternate; }
-.cloud--7  img{ --cloud-opacity:0.90; animation: float-a 33s -9s  ease-in-out infinite alternate; }
 .cloud--8  img{ --cloud-opacity:0.94; animation: float-b 25s -18s ease-in-out infinite alternate; }
 .cloud--9  img{ --cloud-opacity:0.92; animation: float-a 29s -5s  ease-in-out infinite alternate; }
-.cloud--10 img{ --cloud-opacity:0.93; animation: float-b 35s -24s ease-in-out infinite alternate; }
 .cloud--11 img{ --cloud-opacity:0.96; animation: float-a 22s -11s ease-in-out infinite alternate; }
 .cloud--12 img{ --cloud-opacity:0.91; animation: float-b 26s -2s  ease-in-out infinite alternate; }
-.cloud--13 img{ --cloud-opacity:0.94; animation: float-a 30s -14s ease-in-out infinite alternate; }
 .cloud--14 img{ --cloud-opacity:0.90; animation: float-b 24s -20s ease-in-out infinite alternate; }
-.cloud--15 img{ --cloud-opacity:0.92; animation: float-a 28s -13s ease-in-out infinite alternate; }
-.cloud--16 img{ --cloud-opacity:0.95; animation: float-b 20s -6s  ease-in-out infinite alternate; }
-.cloud--19 img{ --cloud-opacity:0.96; animation: float-a 26s -19s ease-in-out infinite alternate; }
-.cloud--21 img{ --cloud-opacity:0.94; animation: float-a 21s -15s ease-in-out infinite alternate; }
+.cloud--3  img{ --cloud-opacity:0.5; animation: float-a 19s -7s  ease-in-out infinite alternate; }
+.cloud--6  img{ --cloud-opacity:0.58; animation: float-b 21s -16s ease-in-out infinite alternate; }
+.cloud--7  img{ --cloud-opacity:0.5; animation: float-a 33s -9s  ease-in-out infinite alternate; }
+.cloud--10 img{ --cloud-opacity:0.58; animation: float-b 35s -24s ease-in-out infinite alternate; }
+.cloud--13 img{ --cloud-opacity:0.58; animation: float-a 30s -14s ease-in-out infinite alternate; }
+.cloud--15 img{ --cloud-opacity:0.5; animation: float-a 28s -13s ease-in-out infinite alternate; }
+.cloud--16 img{ --cloud-opacity:0.58; animation: float-b 20s -6s  ease-in-out infinite alternate; }
+.cloud--19 img{ --cloud-opacity:0.58; animation: float-a 26s -19s ease-in-out infinite alternate; }
+.cloud--21 img{ --cloud-opacity:0.5; animation: float-a 21s -15s ease-in-out infinite alternate; }
 
-/* Слой поверх содержимого: неподвижен при скролле, накрывает изображения.
-   Только контур и низкая плотность — читаемость не страдает. */
-.sky--front{
-  z-index: 5;
-  /* На первом экране передний слой скрыт: фиксированное облако ложилось
-     бы на портрет и на имя. Появляется, когда hero уходит вверх. */
-  opacity: 0;
-  transition: opacity .7s var(--ease);
-}
-.sky--front.is-on{
-  /* Не 1: слой проходит и над подписями кейсов, а не только над кадрами.
-     На половинной плотности он читается как деликатная накладка
-     и не мешает набору. */
-  opacity: .5;
-}
-.sky--front.is-dim{ opacity: 1; }   /* приглушение работ его не касается */
-.cloud--f1{ top:12vh; left:6%; width:16vw; rotate:-7deg; }
-.cloud--f2{ top:46vh; right:8%; width:14vw; rotate:9deg; }
-.cloud--f3{ top:70vh; left:38%; width:13vw; rotate:-5deg; }
-.cloud--f4{ top:28vh; right:32%; width:17vw; rotate:6deg; }
-/* Передний слой качается вдвое тише: он лежит поверх подписей к кейсам,
-   и заметное движение там отвлекало бы от чтения. */
-.cloud--f1 img{ --cloud-opacity:0.86; animation: float-soft 34s -6s  ease-in-out infinite alternate; }
-.cloud--f2 img{ --cloud-opacity:0.82; animation: float-soft 28s -17s ease-in-out infinite alternate; }
-.cloud--f3 img{ --cloud-opacity:0.80; animation: float-soft 39s -11s ease-in-out infinite alternate; }
-.cloud--f4 img{ --cloud-opacity:0.78; animation: float-soft 31s -25s ease-in-out infinite alternate; }
 
 /* Проценты считаются от ширины самого облака (18–38vw), поэтому в пикселях
    размах выходит разным — крупные облака идут заметнее мелких, как в небе.
@@ -334,9 +308,9 @@ a, button, summary, label,
   color: #fff;
   opacity: .85;
 }
-/* Синие значки: тон тот же, что у акцентной кнопки. Прозрачность ниже белых —
-   синий на небе тяжелее и при равной плотности начинает спорить с текстом. */
-.doodle--ink{ color: var(--accent); opacity: .5; }
+/* Тёмные значки — чернилами, как рисованные рамки. Прозрачность ниже белых:
+   тёмное на небе тяжелее и при равной плотности спорит с текстом. */
+.doodle--ink{ color: var(--ink); opacity: .45; }
 
 /* Толщина штриха задана в единицах viewBox, поэтому у мелких значков
    она выглядит толще. Выравниваем вручную. */
@@ -368,11 +342,14 @@ a, button, summary, label,
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
-  color: var(--accent);
-  opacity: .55;
+  color: var(--ink);
+  opacity: .5;
   pointer-events: none;
 }
-.mark--circle > svg{ width: 122%; height: 165%; }
+.mark--circle > svg{ width: 116%; height: 150%; }
+/* В лиде строки стоят плотно, и овал в полтора кегля заходил на соседние
+   строки и перечёркивал их. Здесь он почти по высоте слова. */
+.hero__lead .mark--circle > svg{ width: 106%; height: 102%; }
 /* Подчёркивание сидит под словом, а не по центру строки: иначе оно проходит
    по нижним выносным элементам букв «у», «р», «д». */
 .mark--underline > svg{
@@ -388,44 +365,21 @@ a, button, summary, label,
 /* left был 51%: лид тогда был вдвое уже. После расширения строки
    закорючка легла прямо на текст, поэтому ушла в просвет между
    текстом и портретом. */
-.doodle--hero-2   { width: 118px; height: 22px;  top: 66%;  left: 59%; color: var(--accent); opacity: .45; }
-.doodle--works-1  { width: 34px;  height: 62px;  top: 18%;  left: 9%; }
-.doodle--works-2  { width: 46px;  height: 46px;  top: 70%;  left: 2%;  color: var(--accent); opacity: .5; }
-.doodle--works-3  { width: 52px;  height: 52px;  bottom: 8%; right: 6%; }
-.doodle--about-1  { width: 44px;  height: 34px;  top: 12%;  right: 8%; color: var(--accent); opacity: .5; }
-.doodle--about-2  { width: 54px;  height: 54px;  top: 79%;   left: 58%; }
-.doodle--process-1{ width: 40px;  height: 40px;  top: 14%;  right: 3%; }
-.doodle--clients-1{ width: 30px;  height: 30px;  top: -6px; right: 2%; color: var(--accent); opacity: .5; }
-.doodle--strip-1  { width: 74px;  height: 40px;  top: -6px; left: var(--pad); }
+.doodle--hero-2   { width: 118px; height: 22px;  top: 66%;  left: 59%; color: var(--ink); opacity: .4; }
 .doodle--contact-1{ width: 44px;  height: 44px;  top: 24%;  right: 12%; }
-.doodle--contact-2{ width: 96px;  height: 32px;  bottom: 16%; right: 4%; color: var(--accent); opacity: .45; }
 
-/* Между планшетом и десктопом сетка кейсов перестраивается, и три значка
-   попадают на текст. Проверено перебором на 1024px — прячем именно их,
-   остальные девять на этой ширине стоят чисто. */
+/* Знаков осталось три: остальные спорили с работами и ложились на текст.
+   Стрелку к ленте заменила подпись «Листайте вбок» в заголовке ленты.
+   Между планшетом и десктопом звёздочка попадает на текст. */
 @media (max-width: 1100px){
-  .doodle--hero-1,
-  .doodle--works-1,
-  .doodle--works-2,
-  .doodle--works-3,
-  .doodle--process-1,
-  .doodle--strip-1{ display: none; }
+  .doodle--hero-1{ display: none; }
 }
 
-/* На узких экранах пустых мест почти не остаётся: оставляем три знака,
+/* На узких экранах пустых мест почти не остаётся: оставляем один знак,
    остальные убираем — иначе они ложатся на текст. */
 @media (max-width: 760px){
   .doodle{ display: none; }
-  .doodle--hero-1,
-  .doodle--strip-1,
   .doodle--contact-1{ display: block; }
-  /* Стрелка-подсказка к ленте на телефоне нужна больше, чем на планшете:
-     горизонтальный скролл там неочевиден. Но полноразмерная (74x40) не влезает
-     в отступ над лентой и ложится на первый кадр — уменьшаем. */
-  .doodle--strip-1{ width: 52px; height: 26px; top: 0; }
-  /* На телефоне справа сверху теперь стоит фото, и прежнее место звёздочки
-     занято. Проверенное свободное — ниже, между текстом и кнопками. */
-  .doodle--hero-1{ top: 65%; left: 83%; right: auto; }
   /* В контактах на узком экране текст занимает почти всю высоту:
      на десктопной позиции звёздочка ложилась на строку с почтой. */
   .doodle--contact-1{ top: 70%; right: auto; left: 85%; }
@@ -513,11 +467,11 @@ a, button, summary, label,
    за 1,05с, а масштаб доезжал ещё 1,3с — картинка продолжала двигаться,
    когда её уже рассматривают. Осталось проявление с лёгким укрупнением.
    Размытия здесь нет намеренно: на фотографии в полполосы оно дорогое. */
-.js [data-reveal-img] img{
+.js [data-reveal-img] img:not(.work__cloud){
   opacity: 0;
   transform: scale(1.04);
 }
-.js [data-reveal-img].is-visible img{
+.js [data-reveal-img].is-visible img:not(.work__cloud){
   opacity: 1;
   transform: scale(1);
   transition: opacity .62s var(--ease-out), transform .72s var(--ease-out);
@@ -532,7 +486,9 @@ a, button, summary, label,
   display: flex;
   align-items: center;
   gap: var(--gap);
-  padding: clamp(14px, 1.6vw, 22px) var(--pad);
+  /* По бокам тот же край, что у .container: на экранах шире --maxw
+     контент центрируется, и шапка с отступом --pad уезжала к краям окна. */
+  padding: clamp(14px, 1.6vw, 22px) max(var(--pad), calc((100% - var(--maxw)) / 2 + var(--pad)));
   /* Стартует прозрачной, при скролле набирает молочный тон.
      Не «стекло»: плотный молочный цвет + одна волосяная линия. */
   background: rgba(255, 253, 248, 0);
@@ -689,8 +645,7 @@ a, button, summary, label,
      без ступеньки — правее стоит портрет. */
   text-align: left;
   font-size: var(--fs-display);
-  /* Именно 900: из Google Fonts приходят 400/500/600/700/900, и заявленное
-     здесь ранее 800 браузер молча подменял девятисотым. */
+  /* Именно 900: имя — единственное место, где нужен самый плотный вес. */
   font-weight: 900;
   letter-spacing: -.008em;
   /* 0.8 срезал бревис у «Й» строкой выше — нужен воздух над прописными */
@@ -801,10 +756,10 @@ a, button, summary, label,
 .btn:hover .btn__frame, .btn:focus-visible .btn__frame{ fill: var(--ink); }
 
 .btn--accent{ color: var(--paper); }
-.btn--accent .btn__frame{ color: var(--accent); fill: var(--accent); }
-/* Заливка при наведении — бумага, а не чернила: акцент стал темнее (#1B3AA8),
-   и переход в почти такие же тёмные чернила читался бы еле-еле. Инверсия
-   в светлое видна сразу и зеркалит поведение соседней кнопки-контура. */
+.btn--accent .btn__frame{ color: var(--ink); fill: var(--ink); }
+/* Главная кнопка — залитая чернилами, вторая — контур теми же чернилами.
+   При наведении главная инвертируется в бумагу: видно сразу и зеркалит
+   поведение соседней кнопки-контура, которая заливается чернилами. */
 .btn--accent:hover .btn__frame,
 .btn--accent:focus-visible .btn__frame{ fill: var(--paper); }
 .btn--accent:hover, .btn--accent:focus-visible{ color: var(--ink); }
@@ -861,7 +816,9 @@ a, button, summary, label,
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--gap);
-  margin-bottom: clamp(24px, 3.5vh, 48px);
+  /* с рамкой обложка выступает за свой край, и прежние 24–48px
+     почти слепляли заголовок раздела с первой рамкой */
+  margin-bottom: clamp(44px, 6vh, 76px);
 }
 .works__title{ font-size: var(--fs-h2); }
 .works__count{
@@ -885,6 +842,9 @@ a, button, summary, label,
 
 /* Один проект = самостоятельная композиция, а не одинаковая карточка */
 .work{
+  /* насколько рисованная рамка отстоит от обложки; нужна и подписи,
+     чтобы линия у номера упиралась в рамку, а не проходила сквозь неё */
+  --frame-off: clamp(10px, 1.25vw, 18px);
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -893,14 +853,78 @@ a, button, summary, label,
 }
 
 .work__media{
+  /* у <figure> браузерные поля 1em 40px: из-за них обложка не доходила
+     до краёв своих колонок и отрывалась от подписи */
+  margin: 0;
   position: relative;
-  overflow: hidden;
-  background: var(--sky-light);
   /* Пропорция задаётся в разметке (--ratio) и совпадает с пропорцией
-     обложки: композиции свёрстаны с полями, кроп их ломает. */
+     обложки. */
   aspect-ratio: var(--ratio, 4 / 3);
 }
-.work__media img{
+/* Обрезка живёт на отдельном слое: сама фигура должна выпускать наружу
+   рамку, а картинка при наведении увеличивается и не должна вылезать. */
+.work__clip{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--sky-light);
+}
+/* Рамка обложки — та же карандашная линия, что у кнопок на первом экране.
+   Обложка перестаёт быть голым прямоугольником, а сайт держит один почерк. */
+.work__frame{
+  position: absolute;
+  top: calc(-1 * var(--frame-off));
+  left: calc(-1 * var(--frame-off));
+  width: calc(100% + 2 * var(--frame-off));
+  height: calc(100% + 2 * var(--frame-off));
+  overflow: visible;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+/* Как у кнопок: при наведении контур обводят карандашом ещё раз. */
+.work__frame--redraw{
+  opacity: 0;
+  transition: opacity .16s var(--ease);
+}
+.work:hover .work__frame--redraw,
+.work:has(.work__more:focus-visible) .work__frame--redraw{ opacity: .45; }
+/* Облако, которое наплывает на обложку при прокрутке. Раньше это делал
+   общий неподвижный слой поверх страницы, но он закрывал и подписи с текстом.
+   Теперь у каждой обложки своё облако, и заходит оно со стороны,
+   противоположной подписи, — текст остаётся чистым.
+   --t от 0 до 1 выставляет скрипт: 0 — облако за краем кадра,
+   1 — заплыло на картинку. Без скрипта облако стоит на полпути. */
+.work__cloud{
+  position: absolute;
+  z-index: 3;
+  width: clamp(150px, 27%, 330px);
+  height: auto;
+  pointer-events: none;
+  opacity: .92;
+  will-change: transform;
+}
+.work__cloud--l{
+  left: 0;
+  transform: translate3d(calc(var(--t, .6) * 90% - 75%), 0, 0) rotate(-4deg);
+}
+.work__cloud--r{
+  right: 0;
+  transform: translate3d(calc(75% - var(--t, .6) * 90%), 0, 0) rotate(5deg);
+}
+/* Облако выступает за край обложки, а на узком десктопе и за край окна.
+   Обрезаем по секции, чтобы не появлялась горизонтальная прокрутка. */
+.works{ overflow-x: clip; }
+/* На телефоне обложка во всю ширину, и облако закрывало бы саму работу. */
+@media (max-width: 760px){
+  .work__cloud{ display: none; }
+}
+
+.work__clip img{
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -908,7 +932,7 @@ a, button, summary, label,
 }
 /* Наведение: изображение слегка приближается */
 @media (hover: hover) and (pointer: fine){
-  .work:hover .work__media img{
+  .work:hover .work__clip img{
     transform: scale(1.035);
     /* было 1.1s: курсор давно на месте, а картинка всё ещё едет.
        300мс — зум успевает закончиться вместе с движением руки. */
@@ -952,6 +976,10 @@ a, button, summary, label,
   align-items: center;
   gap: 8px;
   margin-top: 4px;
+  /* у <button> браузерное поле 6px по бокам: текст стоял правее названия */
+  padding: 0;
+  border: 0;
+  background: none;
   font-size: .88rem;
   color: var(--accent-ink);
   position: static;
@@ -972,62 +1000,65 @@ a, button, summary, label,
   outline-offset: 10px;
 }
 
-/* -- индивидуальные композиции -- */
+/* -- индивидуальные композиции --
+   На широком экране подпись стоит сбоку от обложки. Раньше она прижималась
+   к нижнему краю кадра, а кадры идут лесенкой, поэтому подпись оказывалась
+   ближе к следующей обложке, чем к своей, и было непонятно, чья она.
+   Теперь подпись всегда начинается вровень с верхним краем своей обложки,
+   а линия у номера дотягивается до кадра и «пристёгивает» текст к нему.
+   Между кейсами увеличен зазор, чтобы каждая пара читалась отдельно. */
 
 /* 01 — крупный вводный кейс: широкий кадр и подпись в правой колонке */
-/* Колонка подписи расширена с трёх до четырёх: под описание трёх колонок
-   не хватало, строки ломались после каждого второго слова. */
 .work--lead .work__media{ grid-column: 1 / 9; }
-.work--lead .work__meta {
-  grid-column: 9 / -1;
-  grid-row: 1;
-  justify-content: flex-end;
-  padding-bottom: clamp(10px, 2.5vh, 30px);
-}
+.work--lead .work__meta { grid-column: 9 / -1; grid-row: 1; }
 
 /* 02 — текст слева, крупный кадр справа */
 .work--right .work__media{ grid-column: 6 / -1; }
-.work--right .work__meta {
-  grid-column: 1 / 6;
-  grid-row: 1;
-  justify-content: flex-end;
-  padding-bottom: 8px;
-  padding-right: var(--gap);
-}
+.work--right .work__meta { grid-column: 1 / 6; grid-row: 1; }
 
-/* 03 — высокий кадр и компактный текстовый блок рядом */
-.work--tall .work__media{ grid-column: 1 / 7; }
-.work--tall .work__meta {
-  grid-column: 8 / 12;
-  grid-row: 1;
-  justify-content: flex-end;
-  padding-bottom: clamp(12px, 3vh, 38px);
-}
-/* 04 — квадрат со сдвигом вправо */
-.work--offset .work__media{ grid-column: 1 / 8; }
-.work--offset .work__meta {
-  grid-column: 8 / -1;
-  grid-row: 1;
-  justify-content: flex-start;
-  padding-top: clamp(10px, 2.6vh, 34px);
-  padding-left: var(--gap);
-}
+/* 03 — кадр и компактный текстовый блок рядом. Все обложки 4:3,
+   поэтому кадр шире прежнего вертикального: в шести колонках он мельчил. */
+.work--tall .work__media{ grid-column: 1 / 8; }
+.work--tall .work__meta { grid-column: 8 / 12; grid-row: 1; }
+
+/* 04 — кадр со сдвигом вправо относительно соседа сверху */
+.work--offset .work__media{ grid-column: 3 / 10; }
+.work--offset .work__meta { grid-column: 10 / -1; grid-row: 1; }
 
 /* 05 — широкий кадр, сдвинутый вправо */
 .work--wide .work__media{ grid-column: 5 / -1; }
-.work--wide .work__meta {
-  grid-column: 1 / 5;
-  grid-row: 1;
-  justify-content: flex-end;
-  padding-bottom: clamp(8px, 2vh, 24px);
-  padding-right: var(--gap);
-}
+.work--wide .work__meta { grid-column: 1 / 5; grid-row: 1; }
 
-/* 06 — собранный по центру кадр */
+/* 06 — собранный по центру кадр, подпись над ним */
 .work--center .work__media{ grid-column: 2 / 12; }
 .work--center .work__meta { grid-column: 2 / 12; }
-/* Здесь подпись идёт во всю ширину кадра, и 44ch превращались бы в одну
-   длинную строку через весь экран — сужаем сильнее. */
+
+@media (min-width: 1025px){
+  .works__grid{ row-gap: clamp(64px, 10vh, 120px); }
+
+  .work__meta{ justify-content: flex-start; padding-top: 0; }
+
+  /* Линия у номера уходит в зазор между колонками и упирается в рамку.
+     Когда подпись справа от обложки, линия переезжает в начало строки
+     и занимает только зазор: номер встаёт по одному краю с названием. */
+  .work--right .work__index,
+  .work--wide  .work__index{ margin-right: calc(-1 * (var(--gap) - var(--frame-off))); }
+  .work--lead   .work__index,
+  .work--tall   .work__index,
+  .work--offset .work__index{ margin-left: calc(-1 * (var(--gap) - var(--frame-off))); }
+  /* Перемычка короткая, а зазор до номера ужат с 14 до 6px отрицательным
+     полем: так номер встаёт ровно над названием. */
+  .work--lead   .work__index::after,
+  .work--tall   .work__index::after,
+  .work--offset .work__index::after{
+    order: -1;
+    flex: 0 0 calc(var(--gap) - var(--frame-off) - 6px);
+    margin-right: -8px;
+  }
+
+  .work--center .work__meta { grid-row: 1; padding-bottom: 16px; }
+  .work--center .work__media{ grid-row: 2; }
+}
 
 /* 09. МОДАЛЬНОЕ ОКНО КЕЙСА =============================================== */
 .modal[hidden]{ display: none; }
@@ -1041,7 +1072,7 @@ a, button, summary, label,
 .modal__overlay{
   position: absolute;
   inset: 0;
-  background: rgba(16, 42, 67, .42);
+  background: rgba(21, 29, 60, .45);   /* те же чернила, что у текста */
   opacity: 0;
   transition: opacity .3s var(--ease);
 }
@@ -1077,6 +1108,21 @@ a, button, summary, label,
 }
 .modal__close:hover{ background: var(--ink); color: var(--paper); }
 
+/* Обложка во всю ширину окна: кейс начинается с работы, а не с текста.
+   Та же рисованная рамка, что на главной, чтобы окно и лента кейсов
+   говорили одним почерком. */
+.modal__cover{
+  --frame-off: clamp(8px, 1vw, 14px);
+  position: relative;
+  margin: 0 0 clamp(36px, 6vh, 64px);
+  aspect-ratio: 2000 / 1493;
+}
+
+.modal__head{
+  padding-bottom: clamp(18px, 3vh, 28px);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(24px, 4vh, 40px);
+}
 .modal__index{
   font-size: var(--fs-meta);
   letter-spacing: .16em;
@@ -1086,16 +1132,25 @@ a, button, summary, label,
 }
 .modal__title{
   font-size: clamp(1.8rem, 4.4vw, 3.6rem);
-  margin-bottom: 22px;
 }
+
+/* Две колонки: факты слева, рассказ справа. Пропорция 4 : 8 — при
+   одной колонке текст шёл узкой полосой, а правая половина окна пустовала. */
+.modal__layout{
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: start;
+}
+/* Факты едут вместе с чтением: пока листаешь длинный рассказ,
+   направление и роль остаются перед глазами. */
 .modal__facts{
   display: flex;
-  flex-wrap: wrap;
-  gap: clamp(20px, 4vw, 60px);
-  padding-block: 22px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 30px;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0;
+  position: sticky;
+  top: 0;
 }
 .modal__fact dt{
   font-size: var(--fs-meta);
@@ -1109,9 +1164,23 @@ a, button, summary, label,
 .modal__text{
   font-size: clamp(1rem, 1.3vw, 1.2rem);
   max-width: 62ch;
-  margin-bottom: 14px;
 }
 .modal__text + .modal__text{ margin-top: 14px; }
+
+/* На узком экране колонки встают друг под друга, а факты собираются
+   в компактную сетку два на два над текстом. */
+@media (max-width: 760px){
+  .modal__layout{ grid-template-columns: 1fr; gap: 26px; }
+  .modal__facts{
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .modal__fact--wide{ grid-column: 1 / -1; }
+}
 
 /* Кадры кейса укладываются рядами. Ряд занимает всю ширину, и внутри ряда
    у всех кадров одна высота — за счёт того, что ширины раздаются
@@ -1145,6 +1214,7 @@ a, button, summary, label,
   height: auto;
   display: block;
   background: var(--sky-light);
+  border-radius: 6px;   /* как у обложки над ними */
 }
 /* На узком экране ряды разворачиваются в столбец: два-три кадра в ряд
    на 360px превращают работу в нечитаемые полоски. */
@@ -1187,14 +1257,6 @@ a, button, summary, label,
   width: 34px; height: 1px;
   background: var(--ink);
   flex: none;
-}
-.about__sign span{
-  font-family: var(--font);
-  font-size: .74rem;
-  font-weight: 400;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--muted-ink);
 }
 
 .about__body{ grid-column: 6 / -1; }
@@ -1329,6 +1391,17 @@ a, button, summary, label,
   transition: opacity .18s var(--ease), transform .18s var(--ease);
 }
 .client:hover img{ opacity: 1; transform: translateY(-2px); }
+
+/* На телефоне flex с space-between раскладывал восемь знаков как 3 + 4 + 1,
+   и последний оставался один в строке. Две ровные колонки читаются списком. */
+@media (max-width: 760px){
+  .clients__list{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: start;
+    gap: 22px 24px;
+  }
+}
 
 /* Логотипы — реальные файлы клиентов, приведённые к одному цвету (--ink)
    и одной оптической высоте. Лежат в assets/images/logos/. */
@@ -1471,37 +1544,83 @@ a, button, summary, label,
    фиксирована, ширина подстраивается под пропорцию — блок остаётся низким.
    ========================================================================= */
 .strip{
-  padding-block: clamp(30px, 5vh, 66px) 0;
+  /* Сверху отступ меньше обычного: лента продолжает раздел с кейсами,
+     а не начинает новую тему. */
+  padding-block: clamp(10px, 2vh, 30px) clamp(20px, 4vh, 50px);
   position: relative;
 }
-/* мягкое затухание у правого края — видно, что лента продолжается */
-.strip::after{
-  content: "";
-  position: absolute;
-  top: 0; right: 0; bottom: 10px;
-  width: clamp(28px, 5vw, 80px);
-  background: linear-gradient(90deg, rgba(140,191,246,0), rgba(140,191,246,.85));
-  pointer-events: none;
+.strip__head{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--gap);
+  margin-bottom: clamp(4px, 1vh, 12px);
+}
+/* На ступень мельче заголовков разделов: это продолжение «Избранных работ»,
+   а не новая глава. */
+.strip__title{
+  font-size: clamp(1.7rem, 3.4vw, 3rem);
+  margin-top: 10px;
+}
+.strip__hint{
+  font-size: var(--fs-meta);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
+  padding-bottom: 6px;
+}
+/* Стрелки ленты. На устройствах с мышью они заменяют подсказку «Листайте
+   вбок»: колесо мыши ленту не листает. На сенсорных экранах наоборот —
+   там свайп привычен, и вместо кнопок остаётся подсказка. */
+.strip__nav{ display: none; gap: 10px; }
+.strip__btn{
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: none;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: background .16s var(--ease), color .16s var(--ease), opacity .16s var(--ease);
+}
+.strip__btn:hover,
+.strip__btn:focus-visible{ background: var(--ink); color: var(--paper); }
+.strip__btn:disabled{ opacity: .3; pointer-events: none; }
+@media (hover: hover) and (pointer: fine){
+  .strip__hint{ display: none; }
+  .strip__nav{ display: flex; }
 }
 
 .strip__track{
   /* Высота кадра одна на всю ленту: и сама высота, и линия верха.
      Пробовались разные высоты и сдвиг по вертикали — кадры читались как
      случайно обрезанные, а не как ритм. Разнообразие держится тем, что
-     кадры разной ширины, и порядком: рядом не стоят два кадра одного проекта. */
-  --strip-h: clamp(126px, 16vh, 184px);
+     кадры разной ширины, и порядком: рядом не стоят два кадра одного проекта.
+     Высота удвоена: при прежних 184px работы было не рассмотреть. */
+  --strip-h: clamp(252px, 32vh, 368px);
   display: flex;
   align-items: flex-start;
   gap: clamp(6px, .7vw, 12px);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
-  /* лента идёт от края до края, но первый кадр встаёт по сетке страницы */
+  /* лента идёт от края до края, но первый кадр встаёт по сетке страницы.
+     scroll-padding обязателен: без него привязка прокрутки тянула первый
+     кадр к самому краю окна, мимо поля. */
   padding-inline: var(--pad);
+  scroll-padding-inline: var(--pad);
+  /* Мягкое затухание у правого края — видно, что лента продолжается.
+     Маской, а не цветной накладкой: накладка не совпадала с градиентом
+     неба и читалась светлой полосой. */
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - clamp(28px, 5vw, 80px)), transparent);
+          mask-image: linear-gradient(90deg, #000 calc(100% - clamp(28px, 5vw, 80px)), transparent);
   /* Вертикальный запас под увеличение при наведении. Без него у ленты
      overflow-x: auto, а он по спецификации делает обрезающей и вертикальную
      ось, и выросший кадр срезало бы сверху и снизу. */
-  padding-block: 22px 26px;
+  padding-block: 40px 44px;
   scrollbar-width: thin;
   scrollbar-color: var(--muted) transparent;
 }
@@ -1519,7 +1638,6 @@ a, button, summary, label,
 .strip__track li{
   flex: 0 0 auto;
   scroll-snap-align: start;
-  background: var(--sky-light);
   position: relative;
   /* Растёт сам кадр, а не картинка внутри него: иначе обрезка по рамке
      просто увеличила бы кроп, а рассмотреть работу лучше не вышло бы. */
@@ -1529,6 +1647,56 @@ a, button, summary, label,
   height: var(--strip-h);
   width: auto;
   display: block;
+  /* фон-заглушка на самой картинке, а не на кадре: на телефоне под кадром
+     стоит подпись, и фон кадра лёг бы под неё голубой плашкой */
+  background: var(--sky-light);
+  border-radius: 6px;   /* как у обложек кейсов */
+}
+
+/* Подпись кадра: проект и тип работы. На компьютере это плашка поверх
+   нижнего края, появляется при наведении. На телефоне наведения нет,
+   поэтому подпись стоит под кадром всегда. */
+.strip__cap{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* Ширина 0 + min-width 100%: подпись переносится по ширине кадра и не
+     раздвигает его. Иначе длинная подпись делала кадр шире картинки. */
+  width: 0;
+  min-width: 100%;
+  padding-top: 10px;
+  font-size: .82rem;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.strip__cap b{ font-weight: 600; }
+.strip__cap span{ color: var(--muted-ink); }
+
+@media (hover: hover) and (pointer: fine){
+  .strip__cap{
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: auto;
+    min-width: 0;
+    max-width: calc(100% - 20px);
+    padding: 8px 12px 9px;
+    background: var(--paper);
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(21, 29, 60, .16);
+    opacity: 0;
+    translate: 0 6px;
+    transition: opacity .18s var(--ease), translate .18s var(--ease-out);
+    pointer-events: none;
+  }
+  /* Кадр при наведении уже увеличивается в 1.1 раза; плашку сжимаем
+     обратно, чтобы её текст оставался одного кегля во всей ленте. */
+  .strip__track li:hover .strip__cap{
+    opacity: 1;
+    translate: 0 0;
+    scale: .91;
+    transform-origin: left bottom;
+  }
 }
 
 @media (hover: hover) and (pointer: fine){
@@ -1536,7 +1704,7 @@ a, button, summary, label,
      200мс выбраны так, чтобы при проведении вдоль ленты кадры поднимались
      один за другим волной, а не дёргались. */
   .strip__track li:hover{
-    transform: scale(1.18);
+    transform: scale(1.1);
     z-index: 2;
     box-shadow: 0 10px 26px rgba(21, 29, 60, .18);
   }
@@ -1604,7 +1772,6 @@ a, button, summary, label,
   .process__runner{ display: none; }   /* линия и бегун — только на десктопе */
   /* Передний слой облаков на планшете перегружал экран: узкая колонка
      и накладка поверх содержимого плохо уживаются. */
-  .sky--front{ display: none; }
 }
 
 /* ---- ≤ 760px : телефон ----
@@ -1701,22 +1868,14 @@ a, button, summary, label,
 /* ---- ≤ 760px : одна колонка ---- */
 @media (max-width: 760px){
   /* На мобильных оставляем несколько неподвижных облаков на фиксированных
-     высотах: параллакс выключен, поэтому позицию задаём здесь.
-     Передний слой на узких экранах убираем — он мешал бы содержимому. */
+     высотах: параллакс выключен, поэтому позицию задаём здесь. */
   .cloud{ display: none; }
-  .sky--front{ display: none; }
-  .cloud--2, .cloud--5, .cloud--8, .cloud--11, .cloud--14, .cloud--16{
-    display: block;
-    transform: none !important;
-    width: 58vw;
-  }
-  .cloud--2 { top:  10vh; right: -12%; left: auto; }
+  .cloud--2, .cloud--5, .cloud--8, .cloud--11, .cloud--14,   .cloud--2 { top:  10vh; right: -12%; left: auto; }
   .cloud--5 { top:  76vh; left:  -10%; right: auto; }
   .cloud--8 { top: 150vh; right:  -8%; left: auto; }
   .cloud--11{ top: 224vh; left:   -6%; right: auto; }
   .cloud--14{ top: 298vh; right: -10%; left: auto; }
-  .cloud--16{ top: 372vh; left:   -8%; right: auto; width: 50vw; }
-
+  
   .hero__title span:last-child{ padding-left: 0; }
   .hero__plate{
     position: static;
@@ -1806,8 +1965,8 @@ a, button, summary, label,
 
   .js [data-reveal],
   .js [data-reveal].is-visible{ opacity: 1; transform: none; filter: none; }
-  .js [data-reveal-img] img,
-  .js [data-reveal-img].is-visible img{ opacity: 1; transform: none; }
+  .js [data-reveal-img] img:not(.work__cloud),
+  .js [data-reveal-img].is-visible img:not(.work__cloud){ opacity: 1; transform: none; }
 
-  .work:hover .work__media img{ transform: none; }
+  .work:hover .work__clip img{ transform: none; }
 }
