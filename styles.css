@@ -40,6 +40,9 @@
   --line:       rgba(21, 29, 60, .18);
   --line-soft:  rgba(21, 29, 60, .10);
 
+  /* Скругление картинок работ: обложки, кадры кейса, галерея. */
+  --radius-img: clamp(10px, 1.4vw, 18px);
+
   /* --- ТИПОГРАФИКА ---
      Одно семейство на весь сайт. Golos Text — русский гротеск с родной
      кириллицей и диапазоном 400–900: иерархия строится весом и масштабом,
@@ -855,7 +858,9 @@ a, button, summary, label,
   position: absolute;
   inset: 0;
   overflow: hidden;
-  border-radius: 6px;
+  /* Скругление идёт параллельно углу рамки: на широком экране рамка
+     круглее, и картинка вслед за ней тоже. */
+  border-radius: var(--radius-img);
   background: var(--sky-light);
 }
 /* Рамка обложки — та же карандашная линия, что у кнопок на первом экране.
@@ -1202,7 +1207,7 @@ a, button, summary, label,
   height: auto;
   display: block;
   background: var(--sky-light);
-  border-radius: 6px;   /* как у обложки над ними */
+  border-radius: var(--radius-img);   /* как у обложки над ними */
 }
 /* На узком экране ряды разворачиваются в столбец: два-три кадра в ряд
    на 360px превращают работу в нечитаемые полоски. */
@@ -1638,7 +1643,7 @@ a, button, summary, label,
   /* фон-заглушка на самой картинке, а не на кадре: на телефоне под кадром
      стоит подпись, и фон кадра лёг бы под неё голубой плашкой */
   background: var(--sky-light);
-  border-radius: 6px;   /* как у обложек кейсов */
+  border-radius: var(--radius-img);   /* как у обложек кейсов */
 }
 
 /* Подпись кадра: проект и тип работы. На компьютере это плашка поверх
@@ -1855,15 +1860,22 @@ a, button, summary, label,
 
 /* ---- ≤ 760px : одна колонка ---- */
 @media (max-width: 760px){
-  /* На мобильных оставляем несколько неподвижных облаков на фиксированных
-     высотах: параллакс выключен, поэтому позицию задаём здесь. */
+  /* На телефоне параллакс выключен, а небо закреплено на один экран.
+     Облако на высоте больше 100vh в кадр не попадает никогда, поэтому
+     все три стоят в пределах экрана, по краям, и видны всё время, пока
+     листаешь страницу. Небольшие и полупрозрачные, чтобы текст поверх
+     читался свободно. */
   .cloud{ display: none; }
-  .cloud--2, .cloud--5, .cloud--8, .cloud--11, .cloud--14,   .cloud--2 { top:  10vh; right: -12%; left: auto; }
-  .cloud--5 { top:  76vh; left:  -10%; right: auto; }
-  .cloud--8 { top: 150vh; right:  -8%; left: auto; }
-  .cloud--11{ top: 224vh; left:   -6%; right: auto; }
-  .cloud--14{ top: 298vh; right: -10%; left: auto; }
-  
+  .cloud--2, .cloud--5, .cloud--8{
+    display: block;
+    transform: none !important;
+    width: 46vw;
+  }
+  .cloud--2 img, .cloud--5 img, .cloud--8 img{ --cloud-opacity: .7; }
+  .cloud--2 { top: 12vh; right: -18%; left: auto; }
+  .cloud--5 { top: 48vh; left:  -20%; right: auto; }
+  .cloud--8 { top: 80vh; right: -14%; left: auto; width: 40vw; }
+
   .hero__title span:last-child{ padding-left: 0; }
   .hero__plate{
     position: static;
