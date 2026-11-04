@@ -63,7 +63,7 @@
      Особенно больно это бьёт при переименовании картинок — старый скрипт
      ссылается на прежние имена файлов, и кейсы показывают не те кадры.
      Меняйте число при каждой правке стилей или скрипта. -->
-<link rel="stylesheet" href="styles.css?v=20261105b">
+<link rel="stylesheet" href="styles.css?v=20261105c">
 
 <!-- Без JS reveal-анимации не отработают, поэтому снимаем стартовые состояния. -->
 <noscript><style>
@@ -149,30 +149,24 @@
 </defs></svg>
 
 <!-- ==========================================================================
-     НЕБО. Два плана облаков: девять ближних, плотных, и девять дальних,
-     бледных. Дальний план даёт небу глубину, но из-за низкой плотности
-     не спорит с текстом и работами.
+     НЕБО. Два плана облаков: девять ближних, плотных, и три дальних,
+     бледных. Дальних было девять — небо получалось перегруженным.
+     Трёх хватает, чтобы у неба оставалась глубина.
      Файлы лежат в assets/clouds/ — чтобы заменить облака, положите туда свои
      PNG/WebP с прозрачностью под теми же именами.
      ========================================================================== -->
 <div class="sky" id="sky" aria-hidden="true">
   <div class="cloud cloud--1" data-start="6" data-travel="336"><img src="assets/clouds/c1.svg" alt="" decoding="async"></div>
   <div class="cloud cloud--2" data-start="30" data-travel="348"><img src="assets/clouds/c5.svg" alt="" decoding="async"></div>
-  <div class="cloud cloud--3" data-start="58" data-travel="330"><img src="assets/clouds/c2.svg" alt="" decoding="async"></div>
   <div class="cloud cloud--4" data-start="86" data-travel="352"><img src="assets/clouds/c7.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--5" data-start="116" data-travel="338"><img src="assets/clouds/c9.svg" alt="" loading="lazy"></div>
-  <div class="cloud cloud--6" data-start="146" data-travel="344"><img src="assets/clouds/c4.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--7" data-start="176" data-travel="332"><img src="assets/clouds/c11.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--8" data-start="206" data-travel="350"><img src="assets/clouds/c12.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--9" data-start="238" data-travel="340"><img src="assets/clouds/c3.svg" alt="" loading="lazy"></div>
-  <div class="cloud cloud--10" data-start="268" data-travel="346"><img src="assets/clouds/c8.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--11" data-start="298" data-travel="334"><img src="assets/clouds/c10.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--12" data-start="328" data-travel="352"><img src="assets/clouds/c6.svg" alt="" loading="lazy"></div>
-  <div class="cloud cloud--13" data-start="358" data-travel="342"><img src="assets/clouds/c1.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--14" data-start="390" data-travel="338"><img src="assets/clouds/c7.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--15" data-start="18"  data-travel="344"><img src="assets/clouds/c10.svg" alt="" decoding="async"></div>
-  <div class="cloud cloud--16" data-start="46"  data-travel="336"><img src="assets/clouds/c3.svg" alt="" loading="lazy"></div>
-  <div class="cloud cloud--19" data-start="192" data-travel="346"><img src="assets/clouds/c9.svg" alt="" loading="lazy"></div>
   <div class="cloud cloud--21" data-start="312" data-travel="334"><img src="assets/clouds/c11.svg" alt="" loading="lazy"></div>
 </div>
 

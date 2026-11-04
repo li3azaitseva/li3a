@@ -226,16 +226,10 @@ a, button, summary, label,
 .cloud--11{ top:298vh; left:4%; width:30vw; rotate:2deg; }
 .cloud--12{ top:328vh; right:-8%; width:18vw; rotate:6deg; }
 .cloud--14{ top:390vh; right:6%; width:34vw; rotate:4deg; }
-/* Дальний план: садится в промежутки между ближними облаками. Те же формы,
+/* Дальний план: три облака в промежутках между ближними. Те же формы,
    но вдвое бледнее — небо получает глубину, а текст поверх остаётся чистым. */
-.cloud--3 { top:58vh; left:24%; width:20vw; rotate:-6deg; }
-.cloud--6 { top:146vh; right:-10%; width:22vw; rotate:-4deg; }
 .cloud--7 { top:176vh; left:16%; width:18vw; rotate:7deg; }
-.cloud--10{ top:268vh; right:12%; width:20vw; rotate:-5deg; }
-.cloud--13{ top:358vh; left:-6%; width:32vw; rotate:-3deg; }
 .cloud--15{ top:18vh;  right:28%; width:16vw; rotate:5deg;  }
-.cloud--16{ top:46vh;  left:-4%;  width:24vw; rotate:-5deg; }
-.cloud--19{ top:192vh; right:-6%; width:26vw; rotate:4deg;  }
 .cloud--21{ top:312vh; right:24%; width:19vw; rotate:6deg;  }
 
 /* Плотность и собственное «дыхание» каждого облака. Анимация идёт всегда,
@@ -254,14 +248,8 @@ a, button, summary, label,
 .cloud--11 img{ --cloud-opacity:0.96; animation: float-a 22s -11s ease-in-out infinite alternate; }
 .cloud--12 img{ --cloud-opacity:0.91; animation: float-b 26s -2s  ease-in-out infinite alternate; }
 .cloud--14 img{ --cloud-opacity:0.90; animation: float-b 24s -20s ease-in-out infinite alternate; }
-.cloud--3  img{ --cloud-opacity:0.5; animation: float-a 19s -7s  ease-in-out infinite alternate; }
-.cloud--6  img{ --cloud-opacity:0.58; animation: float-b 21s -16s ease-in-out infinite alternate; }
 .cloud--7  img{ --cloud-opacity:0.5; animation: float-a 33s -9s  ease-in-out infinite alternate; }
-.cloud--10 img{ --cloud-opacity:0.58; animation: float-b 35s -24s ease-in-out infinite alternate; }
-.cloud--13 img{ --cloud-opacity:0.58; animation: float-a 30s -14s ease-in-out infinite alternate; }
 .cloud--15 img{ --cloud-opacity:0.5; animation: float-a 28s -13s ease-in-out infinite alternate; }
-.cloud--16 img{ --cloud-opacity:0.58; animation: float-b 20s -6s  ease-in-out infinite alternate; }
-.cloud--19 img{ --cloud-opacity:0.58; animation: float-a 26s -19s ease-in-out infinite alternate; }
 .cloud--21 img{ --cloud-opacity:0.5; animation: float-a 21s -15s ease-in-out infinite alternate; }
 
 
